@@ -1,6 +1,6 @@
 // Mouth Munch — service worker.
 // Bump VERSION when shipping app updates to invalidate old caches.
-const VERSION = "mouth-munch-v1";
+const VERSION = "mouth-munch-v2";
 const SHELL_CACHE = `${VERSION}-shell`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 
@@ -35,17 +35,26 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-async function cacheFirst(req, cacheName, fallback) {
+async function cacheFirst(req, cacheName) {
   const cache = await caches.open(cacheName);
   const cached = await cache.match(req);
   if (cached) return cached;
+  const resp = await fetch(req);
+  if (resp && (resp.ok || resp.type === "opaque")) {
+    cache.put(req, resp.clone()).catch(() => {});
+  }
+  return resp;
+}
+
+async function networkFirst(req, cacheName, fallback) {
+  const cache = await caches.open(cacheName);
   try {
     const resp = await fetch(req);
-    if (resp && (resp.ok || resp.type === "opaque")) {
-      cache.put(req, resp.clone()).catch(() => {});
-    }
+    if (resp && resp.ok) cache.put(req, resp.clone()).catch(() => {});
     return resp;
   } catch (err) {
+    const cached = await cache.match(req);
+    if (cached) return cached;
     if (fallback) {
       const fb = await cache.match(fallback);
       if (fb) return fb;
@@ -60,11 +69,13 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(req.url);
 
   if (url.origin === self.location.origin) {
-    // App shell — cache-first; if the network is gone too, fall back to index.html.
-    event.respondWith(cacheFirst(req, SHELL_CACHE, "./index.html"));
+    // App shell — network-first so each refresh picks up new code immediately.
+    // Falls back to the cache when offline.
+    event.respondWith(networkFirst(req, SHELL_CACHE, "./index.html"));
   } else {
-    // Third-party assets (MediaPipe library, WASM, model file) — cache-first too,
-    // so the game keeps working without a connection after the first load.
+    // Third-party assets (MediaPipe library, WASM, model file) — cache-first.
+    // They almost never change and the model is multiple MB, so this keeps
+    // launches fast and lets the game work offline after the first load.
     event.respondWith(cacheFirst(req, RUNTIME_CACHE));
   }
 });
