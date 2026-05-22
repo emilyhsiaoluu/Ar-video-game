@@ -727,3 +727,48 @@ document.addEventListener("visibilitychange", () => {
     if (video.paused) video.play().catch(() => {});
   }
 });
+
+/* ============================================================
+   PWA: service worker + install prompt
+   ============================================================ */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  });
+}
+
+const installBtn = document.getElementById("installBtn");
+const iosInstallHint = document.getElementById("iosInstallHint");
+let deferredInstallPrompt = null;
+
+const isStandalone =
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.matchMedia("(display-mode: fullscreen)").matches ||
+  window.navigator.standalone === true;
+
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+if (!isStandalone && isIOS) {
+  iosInstallHint.classList.remove("hidden");
+}
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  if (!isStandalone) installBtn.classList.remove("hidden");
+});
+
+installBtn.addEventListener("click", async () => {
+  if (!deferredInstallPrompt) return;
+  installBtn.disabled = true;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice.catch(() => {});
+  deferredInstallPrompt = null;
+  installBtn.classList.add("hidden");
+});
+
+window.addEventListener("appinstalled", () => {
+  installBtn.classList.add("hidden");
+  iosInstallHint.classList.add("hidden");
+  deferredInstallPrompt = null;
+});
