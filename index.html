@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#7b2ff7" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Mouth Munch! 😋💩</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Camera feed (hidden behind the canvas, just used as a pixel source) -->
+  <video id="video" playsinline autoplay muted></video>
+
+  <!-- Everything is drawn here -->
+  <canvas id="canvas"></canvas>
+
+  <!-- In-game heads-up display -->
+  <div id="hud" class="hidden">
+    <div class="topbar">
+      <div id="scoreChip" class="score-chip">⭐ <span id="scoreNum">0</span> / <span id="goalNum">10</span></div>
+      <div id="hudPicker" class="hud-picker"></div>
+      <button id="restartBtn" class="icon-btn" title="Start over">🔄</button>
+    </div>
+    <div id="hint" class="hint">😮 Open wide to munch!</div>
+  </div>
+
+  <!-- Start screen -->
+  <div id="startScreen" class="overlay">
+    <div class="panel">
+      <h1 class="title">Mouth Munch! <span class="wiggle">😋</span></h1>
+      <p class="subtitle">Flying emojis zoom around the screen.<br/>Open your mouth to gobble them up and score stars!</p>
+
+      <p class="label">1. Pick your snack</p>
+      <div id="startPicker" class="picker"></div>
+
+      <p class="label">2. Pick a speed</p>
+      <div id="difficultyPicker" class="difficulty"></div>
+
+      <button id="startBtn" class="big-btn">▶ Start Camera</button>
+      <p class="tip">Tip: stand back so your whole face fits, and find good light. 💡<br/>Your camera stays on your device — nothing is uploaded.</p>
+    </div>
+  </div>
+
+  <!-- Win celebration -->
+  <div id="winScreen" class="overlay hidden">
+    <div class="panel win-panel">
+      <h1 class="title">🎉 YOU WIN! 🎉</h1>
+      <p class="subtitle">Awesome munching!<br/>You gobbled <span id="winScore">0</span> emojis!</p>
+      <button id="keepBtn" class="big-btn">Keep Playing ▶</button>
+      <button id="againBtn" class="big-btn secondary">Play Again 🔄</button>
+    </div>
+  </div>
+
+  <!-- Error / camera trouble -->
+  <div id="errorScreen" class="overlay hidden">
+    <div class="panel">
+      <h1 class="title">Oops! 😬</h1>
+      <p id="errorMsg" class="subtitle">Something went wrong.</p>
+      <button id="retryBtn" class="big-btn">Try Again 🔄</button>
+    </div>
+  </div>
+
+  <div id="loader" class="loader hidden">
+    <div class="spinner"></div>
+    <p id="loaderText">Loading camera & face tracking…</p>
+  </div>
+
+  <script type="module" src="game.js"></script>
+</body>
+</html>
