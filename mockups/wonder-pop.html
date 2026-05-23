@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wonder Pop — Mouth Munch mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700;900&family=Caprasimo&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --coral: #ff6b6b;
+    --mint: #4ecdc4;
+    --butter: #ffe66d;
+    --peri: #6c8eef;
+    --plum: #2d1b3d;
+    --paper: #fff8e7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    background: var(--paper);
+    font-family: "DM Sans", system-ui, sans-serif;
+    color: var(--plum);
+    min-height: 100%;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(circle at 12% 18%, var(--butter) 0 8px, transparent 9px),
+      radial-gradient(circle at 88% 22%, var(--mint) 0 6px, transparent 7px),
+      radial-gradient(circle at 30% 78%, var(--coral) 0 7px, transparent 8px),
+      radial-gradient(circle at 78% 88%, var(--peri) 0 5px, transparent 6px);
+    opacity: 0.5;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .nav {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--paper); padding: 12px 16px;
+    font-weight: 700; font-size: 14px;
+    border-bottom: 2px solid var(--plum);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav a { color: var(--plum); text-decoration: none; }
+  .vibe {
+    padding: 14px 16px; background: var(--butter);
+    border-bottom: 2px solid var(--plum);
+    font-size: 14px; line-height: 1.5;
+  }
+  .vibe b { font-weight: 900; }
+  main {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; gap: 28px;
+    padding: 28px 16px 60px; align-items: center;
+  }
+  .phone {
+    width: 100%; max-width: 380px;
+    background: var(--paper);
+    border-radius: 36px;
+    border: 3px solid var(--plum);
+    box-shadow: 8px 8px 0 var(--plum);
+    padding: 28px 22px;
+    position: relative;
+  }
+  .phone-label {
+    position: absolute; top: -14px; left: 20px;
+    background: var(--plum); color: var(--paper);
+    font-weight: 900; font-size: 12px;
+    padding: 4px 12px; border-radius: 999px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .title {
+    font-family: "Caprasimo", serif;
+    font-size: 44px; line-height: 1;
+    color: var(--plum);
+    margin-bottom: 4px;
+  }
+  .title em {
+    font-style: normal; color: var(--coral);
+  }
+  .emoji-big { font-size: 38px; display: inline-block; }
+  .sub {
+    font-size: 16px; font-weight: 500; line-height: 1.45;
+    color: #5b4a6b;
+    margin: 8px 0 22px;
+  }
+  .label {
+    font-size: 13px; font-weight: 900; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--peri);
+    margin: 18px 0 10px;
+  }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip {
+    flex: 1; min-width: 90px;
+    padding: 14px 12px;
+    border-radius: 16px;
+    border: 2.5px solid var(--plum);
+    background: var(--paper);
+    font: 700 15px "DM Sans", sans-serif;
+    color: var(--plum);
+    cursor: pointer;
+  }
+  .chip.on {
+    background: var(--mint);
+    box-shadow: 4px 4px 0 var(--plum);
+    transform: translate(-2px, -2px);
+  }
+  .btn {
+    display: block; width: 100%;
+    padding: 18px;
+    border-radius: 20px;
+    border: 3px solid var(--plum);
+    background: var(--coral);
+    color: white;
+    font: 900 20px "DM Sans", sans-serif;
+    margin-top: 16px;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 var(--plum);
+  }
+  .btn.alt {
+    background: var(--paper); color: var(--plum);
+    font-size: 16px; padding: 14px;
+  }
+  .btn.win {
+    background: var(--mint); color: var(--plum);
+  }
+  /* HUD preview */
+  .hud {
+    background: linear-gradient(180deg, #2d1b3d 0%, #4a2f5e 100%);
+    border-radius: 20px;
+    padding: 16px;
+    color: white;
+    margin-top: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hud-row { display: flex; gap: 10px; align-items: center; }
+  .pill {
+    background: var(--paper); color: var(--plum);
+    padding: 8px 14px; border-radius: 999px;
+    font-weight: 900; font-size: 16px;
+    border: 2.5px solid var(--paper);
+  }
+  .pill.timer { background: var(--butter); }
+  .pill.score { background: var(--coral); color: white; border-color: var(--coral); }
+  .face-hint {
+    font-size: 13px; opacity: 0.8; margin-top: 12px;
+    text-align: center;
+  }
+  /* Scoreboard */
+  .end-title {
+    font-family: "Caprasimo", serif;
+    font-size: 38px; color: var(--coral);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .end-sub {
+    text-align: center; font-weight: 700; font-size: 18px;
+    color: var(--plum);
+    margin-bottom: 18px;
+  }
+  .name-input {
+    width: 100%; padding: 14px 16px;
+    border-radius: 14px; border: 2.5px solid var(--plum);
+    font: 700 17px "DM Sans", sans-serif;
+    background: var(--paper); color: var(--plum);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .name-input:focus { outline: none; border-color: var(--coral); }
+  .board {
+    background: var(--butter);
+    border: 2.5px solid var(--plum);
+    border-radius: 18px;
+    padding: 14px; margin-top: 14px;
+  }
+  .board h3 {
+    font: 900 14px "DM Sans", sans-serif;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--plum); margin-bottom: 10px; text-align: center;
+  }
+  .row {
+    display: grid; grid-template-columns: 30px 1fr auto;
+    align-items: center; gap: 10px;
+    padding: 8px 4px;
+    font-weight: 700; font-size: 15px;
+  }
+  .row + .row { border-top: 1.5px dashed rgba(45,27,61,0.2); }
+  .row .r { font-weight: 900; color: var(--peri); text-align: center; }
+  .row .s { font-weight: 900; color: var(--coral); }
+  .row.me {
+    background: var(--coral); color: white;
+    margin: 4px -8px; padding: 10px 12px;
+    border-radius: 12px;
+    border-top: none;
+  }
+  .row.me + .row { border-top: none; }
+  .row.me .r, .row.me .s { color: white; }
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="./">← All designs</a>
+  <span>1 of 4</span>
+</div>
+<div class="vibe">
+  <b>Wonder Pop</b> — Modern playful. Cleaner shapes, chunky outlines, modern display serif for the title. Coral + mint + butter palette. Kid-friendly without feeling 2012.
+</div>
+
+<main>
+  <section class="phone">
+    <div class="phone-label">Start screen</div>
+    <h1 class="title">Mouth <em>Munch!</em> <span class="emoji-big">😋</span></h1>
+    <p class="sub">Open wide to gobble flying emojis.<br>Score as many as you can in <b>60 seconds</b>.</p>
+    <p class="label">Pick a speed</p>
+    <div class="chips">
+      <button class="chip">🐢 Easy</button>
+      <button class="chip on">🐰 Medium</button>
+      <button class="chip">🚀 Fast</button>
+    </div>
+    <button class="btn">▶  Start Camera</button>
+    <button class="btn alt">🏆  View Scoreboard</button>
+  </section>
+
+  <section class="phone">
+    <div class="phone-label">In game (HUD)</div>
+    <div class="hud">
+      <div class="hud-row">
+        <span class="pill timer">⏱ 47</span>
+        <span class="pill score">⭐ 14</span>
+        <span style="margin-left:auto; opacity:0.7; font-size:24px;">🔄</span>
+      </div>
+      <div style="margin-top:14px; display:flex; gap:6px; justify-content:center;">
+        <span style="opacity:0.5">💩</span>
+        <span style="font-size:22px;">🍕</span>
+        <span style="opacity:0.5">🍩</span>
+        <span style="opacity:0.5">🍪</span>
+        <span style="opacity:0.5">🍎</span>
+      </div>
+      <div class="face-hint">😋 Yum! Keep munching!</div>
+    </div>
+  </section>
+
+  <section class="phone">
+    <div class="phone-label">Time's up</div>
+    <h2 class="end-title">⏰ Time's Up!</h2>
+    <p class="end-sub">You munched <b style="color:var(--coral); font-size:28px;">23</b> emojis!</p>
+    <input class="name-input" placeholder="Type your name" value="Leo">
+    <button class="btn">💾  Save Score</button>
+    <div class="board">
+      <h3>🏆  Top Munchers</h3>
+      <div class="row"><span class="r">🥇</span><span>Maya</span><span class="s">⭐ 31</span></div>
+      <div class="row"><span class="r">🥈</span><span>Sam</span><span class="s">⭐ 27</span></div>
+      <div class="row me"><span class="r">🥉</span><span>Leo (you!)</span><span class="s">⭐ 23</span></div>
+      <div class="row"><span class="r">4</span><span>Dad</span><span class="s">⭐ 18</span></div>
+      <div class="row"><span class="r">5</span><span>Mom</span><span class="s">⭐ 12</span></div>
+    </div>
+    <button class="btn win">🔄  Play Again</button>
+  </section>
+</main>
+</body>
+</html>

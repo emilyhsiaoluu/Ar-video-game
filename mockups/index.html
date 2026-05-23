@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mouth Munch — design options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    background: #0f0f12; color: white;
+    font-family: "Inter", system-ui, sans-serif;
+    min-height: 100%;
+  }
+  header {
+    padding: 32px 20px 20px; text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  header h1 {
+    font-size: 28px; font-weight: 800; letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  header p {
+    font-size: 15px; color: rgba(255,255,255,0.6);
+    line-height: 1.5; max-width: 480px; margin: 0 auto;
+  }
+  main {
+    display: grid; gap: 16px;
+    padding: 20px 16px 60px;
+    max-width: 480px; margin: 0 auto;
+  }
+  a.card {
+    display: block;
+    border-radius: 20px;
+    overflow: hidden;
+    text-decoration: none; color: white;
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .label {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 18px 20px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+    z-index: 2;
+  }
+  .label .name {
+    font-size: 22px; font-weight: 800; letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .label .desc {
+    font-size: 13px; color: rgba(255,255,255,0.75);
+    line-height: 1.4;
+  }
+  .preview {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  /* Wonder Pop */
+  .pop { background: #fff8e7; }
+  .pop::before { content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 18% 20%, #ffe66d 0 18px, transparent 19px),
+      radial-gradient(circle at 82% 28%, #4ecdc4 0 14px, transparent 15px),
+      radial-gradient(circle at 25% 75%, #ff6b6b 0 16px, transparent 17px),
+      radial-gradient(circle at 78% 80%, #6c8eef 0 12px, transparent 13px);
+    opacity: 0.6;
+  }
+  .pop .t {
+    font-family: serif; font-size: 36px; font-weight: 900;
+    color: #2d1b3d; line-height: 1; text-align: center;
+    position: relative;
+  }
+  .pop .t em { color: #ff6b6b; font-style: normal; }
+  .pop .b {
+    margin-top: 12px;
+    background: #ff6b6b; color: white;
+    padding: 12px 28px; border-radius: 14px;
+    border: 2.5px solid #2d1b3d;
+    box-shadow: 4px 4px 0 #2d1b3d;
+    font-weight: 800; font-size: 15px;
+    position: relative;
+  }
+  .pop .label .name, .pop .label .desc { color: white; }
+
+  /* Cosmic Glass */
+  .glass {
+    background:
+      radial-gradient(60vmin 60vmin at 15% 10%, #ff3e8f 0%, transparent 60%),
+      radial-gradient(70vmin 70vmin at 85% 90%, #5b3cff 0%, transparent 60%),
+      radial-gradient(60vmin 60vmin at 50% 50%, #00d9ff 0%, transparent 50%),
+      #08051a;
+    filter: saturate(1.1);
+  }
+  .glass .panel {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 24px 28px;
+    text-align: center;
+  }
+  .glass .t {
+    font-size: 26px; font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff, #ffb8e0);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+  .glass .b {
+    background: linear-gradient(135deg, #ff3e8f, #ff8a3d);
+    color: white;
+    padding: 10px 22px; border-radius: 12px;
+    font-weight: 800; font-size: 14px;
+    box-shadow: 0 8px 20px rgba(255,62,143,0.5);
+  }
+
+  /* Cozy Pastel */
+  .cozy { background: #fdf4e3; }
+  .cozy::before { content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 10%, #ffb088 0 80px, transparent 200px),
+      radial-gradient(ellipse at 85% 80%, #9ab87a 0 100px, transparent 240px),
+      radial-gradient(ellipse at 20% 90%, #b39ddb 0 80px, transparent 200px);
+    opacity: 0.4;
+  }
+  .cozy .panel {
+    background: #fffaf0;
+    border-radius: 24px;
+    padding: 24px 28px;
+    text-align: center;
+    box-shadow: 0 12px 30px -8px rgba(61,47,36,0.2);
+    position: relative;
+  }
+  .cozy .t {
+    font-family: "Fraunces", serif;
+    font-size: 32px; font-weight: 900;
+    color: #3d2f24; line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .cozy .t em { font-style: italic; font-weight: 500; color: #e87a90; }
+  .cozy .b {
+    margin-top: 12px;
+    background: #e87a90; color: #fffaf0;
+    padding: 11px 26px; border-radius: 14px;
+    font-weight: 800; font-size: 14px;
+  }
+  .cozy .label .name, .cozy .label .desc { color: white; }
+
+  /* Neon Arcade */
+  .neon {
+    background:
+      linear-gradient(rgba(139,61,255,0.2) 1px, transparent 1px) 0 0 / 32px 32px,
+      linear-gradient(90deg, rgba(139,61,255,0.2) 1px, transparent 1px) 0 0 / 32px 32px,
+      radial-gradient(ellipse at 50% 50%, rgba(139,61,255,0.5), transparent 70%),
+      #050416;
+  }
+  .neon .panel {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid #00f0ff;
+    box-shadow: 0 0 24px rgba(0,240,255,0.5), inset 0 0 20px rgba(139,61,255,0.2);
+    border-radius: 12px;
+    padding: 24px 28px;
+    text-align: center;
+  }
+  .neon .t {
+    font-family: "Audiowide", "Space Grotesk", sans-serif;
+    font-size: 26px;
+    color: #00f0ff;
+    text-shadow: 0 0 10px #00f0ff, 0 0 24px rgba(0,240,255,0.6);
+    letter-spacing: 0.04em;
+  }
+  .neon .t em { color: #ff2ec5; font-style: normal; text-shadow: 0 0 10px #ff2ec5; }
+  .neon .b {
+    margin-top: 14px;
+    background: linear-gradient(135deg, rgba(0,240,255,0.2), rgba(139,61,255,0.2));
+    color: white;
+    border: 1px solid #00f0ff;
+    padding: 10px 22px; border-radius: 4px;
+    font-family: "Audiowide", sans-serif;
+    font-size: 14px; letter-spacing: 0.1em;
+    text-shadow: 0 0 8px #00f0ff;
+    box-shadow: 0 0 16px rgba(0,240,255,0.3);
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Fraunces:opsz,wght@9..144,500;9..144,900&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+  <h1>Mouth Munch — pick a vibe</h1>
+  <p>Tap any card to see the full design on phone (start screen, in-game HUD, scoreboard). Tell me which one and I'll port it into the real game.</p>
+</header>
+
+<main>
+  <a class="card pop" href="./wonder-pop.html">
+    <div class="preview">
+      <div class="t">Mouth<br><em>Munch!</em> 😋</div>
+      <div class="b">▶ Start Camera</div>
+    </div>
+    <div class="label">
+      <div class="name">1 · Wonder Pop</div>
+      <div class="desc">Modern playful — chunky outlines, display serif, coral + mint. Kid-friendly without feeling 2012.</div>
+    </div>
+  </a>
+
+  <a class="card glass" href="./cosmic-glass.html">
+    <div class="preview">
+      <div class="panel">
+        <div class="t">Mouth Munch 😋</div>
+        <div class="b">Start Camera</div>
+      </div>
+    </div>
+    <div class="label">
+      <div class="name">2 · Cosmic Glass</div>
+      <div class="desc">Premium AR-app feel. Frosted glass, gradient mesh, sleek sans. Snapchat/Instagram filter vibe.</div>
+    </div>
+  </a>
+
+  <a class="card cozy" href="./cozy-pastel.html">
+    <div class="preview">
+      <div class="panel">
+        <div class="t">Mouth <em>Munch</em></div>
+        <div class="b">Start Camera</div>
+      </div>
+    </div>
+    <div class="label">
+      <div class="name">3 · Cozy Pastel</div>
+      <div class="desc">Warm, soft, friendly. Fraunces serif, sage + peach + rose. Like Headspace or a Studio Ghibli kid app.</div>
+    </div>
+  </a>
+
+  <a class="card neon" href="./neon-arcade.html">
+    <div class="preview">
+      <div class="panel">
+        <div class="t">MOUTH <em>MUNCH</em></div>
+        <div class="b">▶ START</div>
+      </div>
+    </div>
+    <div class="label">
+      <div class="name">4 · Neon Arcade</div>
+      <div class="desc">Dark mode arcade. Glowing borders, cyan + magenta on midnight. Cool factor — less obviously "for kids".</div>
+    </div>
+  </a>
+</main>
+</body>
+</html>

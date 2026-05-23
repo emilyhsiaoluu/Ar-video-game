@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cozy Pastel — Mouth Munch mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf4e3;
+    --sage: #9ab87a;
+    --peach: #ffb088;
+    --rose: #e87a90;
+    --lavender: #b39ddb;
+    --ink: #3d2f24;
+    --paper: #fffaf0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    background: var(--cream);
+    font-family: "Nunito", system-ui, sans-serif;
+    color: var(--ink);
+    min-height: 100%;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse at 10% 5%, var(--peach) 0 80px, transparent 200px),
+      radial-gradient(ellipse at 90% 15%, var(--sage) 0 100px, transparent 240px),
+      radial-gradient(ellipse at 20% 95%, var(--lavender) 0 90px, transparent 220px),
+      radial-gradient(ellipse at 80% 85%, var(--rose) 0 70px, transparent 200px);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+  .nav {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--paper);
+    padding: 14px 18px;
+    font: 700 14px "Nunito", sans-serif;
+    border-bottom: 1px solid rgba(61,47,36,0.1);
+    display: flex; justify-content: space-between;
+  }
+  .nav a { color: var(--ink); text-decoration: none; }
+  .vibe {
+    padding: 16px 18px;
+    background: var(--paper);
+    font-size: 14px; line-height: 1.55;
+    border-bottom: 1px solid rgba(61,47,36,0.08);
+    position: relative; z-index: 4;
+  }
+  .vibe b { font-family: "Fraunces", serif; font-weight: 700; font-size: 16px; }
+  main {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; gap: 24px;
+    padding: 28px 16px 60px; align-items: center;
+  }
+  .phone {
+    width: 100%; max-width: 380px;
+    background: var(--paper);
+    border-radius: 32px;
+    padding: 30px 24px;
+    position: relative;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.9) inset,
+      0 20px 50px -10px rgba(61,47,36,0.15);
+  }
+  .phone-label {
+    position: absolute; top: -10px; left: 22px;
+    background: var(--sage); color: var(--paper);
+    font: 800 11px "Nunito", sans-serif;
+    padding: 5px 12px; border-radius: 999px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .title {
+    font-family: "Fraunces", serif;
+    font-size: 44px; font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .title em {
+    font-style: italic; font-weight: 500;
+    color: var(--rose);
+  }
+  .sub {
+    font-size: 16px; font-weight: 500; line-height: 1.55;
+    color: rgba(61,47,36,0.7);
+    margin: 6px 0 22px;
+    font-family: "Fraunces", serif;
+  }
+  .label {
+    font-family: "Fraunces", serif; font-style: italic;
+    font-size: 15px; font-weight: 500;
+    color: var(--sage);
+    margin: 20px 0 10px;
+  }
+  .chips { display: flex; gap: 8px; }
+  .chip {
+    flex: 1;
+    padding: 14px 8px;
+    border-radius: 18px;
+    border: 2px solid rgba(61,47,36,0.12);
+    background: var(--paper);
+    color: var(--ink);
+    font: 700 14px "Nunito", sans-serif;
+    cursor: pointer;
+  }
+  .chip.on {
+    background: var(--sage); color: var(--paper);
+    border-color: var(--sage);
+  }
+  .btn {
+    display: block; width: 100%;
+    padding: 17px;
+    border-radius: 18px;
+    border: none;
+    background: var(--rose);
+    color: var(--paper);
+    font: 800 18px "Nunito", sans-serif;
+    margin-top: 16px;
+    cursor: pointer;
+  }
+  .btn.alt {
+    background: transparent; color: var(--ink);
+    border: 2px solid rgba(61,47,36,0.15);
+    font-size: 15px; padding: 13px;
+  }
+  /* HUD */
+  .hud {
+    background: var(--ink);
+    border-radius: 24px;
+    padding: 18px;
+    color: var(--paper);
+  }
+  .hud-row { display: flex; gap: 8px; align-items: center; }
+  .pill {
+    padding: 9px 14px; border-radius: 999px;
+    font: 800 15px "Nunito", sans-serif;
+  }
+  .pill.timer { background: var(--lavender); color: var(--ink); }
+  .pill.score { background: var(--peach); color: var(--ink); }
+  .face-hint {
+    background: rgba(255,255,255,0.1);
+    padding: 8px 14px; border-radius: 999px;
+    font: 600 13px "Nunito", sans-serif;
+    margin: 14px auto 0; width: fit-content;
+  }
+  /* End */
+  .end-title {
+    font-family: "Fraunces", serif;
+    font-size: 40px; font-weight: 900;
+    color: var(--ink); line-height: 1.1;
+    text-align: center; margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .end-title em { font-style: italic; font-weight: 500; color: var(--rose); }
+  .end-sub {
+    text-align: center; font-family: "Fraunces", serif;
+    font-size: 17px; color: rgba(61,47,36,0.7);
+    margin-bottom: 20px;
+  }
+  .end-sub b { color: var(--rose); font-size: 32px; font-weight: 900; }
+  .name-input {
+    width: 100%; padding: 14px 16px;
+    border-radius: 14px;
+    border: 2px solid rgba(61,47,36,0.15);
+    background: var(--cream);
+    color: var(--ink);
+    font: 600 17px "Nunito", sans-serif;
+    text-align: center;
+  }
+  .name-input:focus {
+    outline: none; border-color: var(--sage);
+  }
+  .board {
+    margin-top: 16px;
+    padding: 18px;
+    border-radius: 20px;
+    background: var(--cream);
+  }
+  .board h3 {
+    font: italic 500 16px "Fraunces", serif;
+    color: var(--sage);
+    margin-bottom: 12px; text-align: center;
+  }
+  .row {
+    display: grid; grid-template-columns: 30px 1fr auto;
+    align-items: center; gap: 10px;
+    padding: 9px 6px;
+    font-weight: 700; font-size: 15px;
+  }
+  .row + .row { border-top: 1px dotted rgba(61,47,36,0.15); }
+  .row .r { font-weight: 800; text-align: center; }
+  .row .s { font-weight: 800; color: var(--rose); }
+  .row.me {
+    background: var(--peach); color: var(--ink);
+    border-radius: 12px; padding: 11px 12px;
+    margin: 6px -10px;
+    border-top: none;
+  }
+  .row.me + .row { border-top: none; }
+  .row.me .s { color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="./">← All designs</a>
+  <span>3 of 4</span>
+</div>
+<div class="vibe">
+  <b>Cozy Pastel</b> — Warm, soft, friendly. Fraunces serif for headings, Nunito for body. Sage, peach, rose, lavender. Less aggressive — like Headspace or a Studio Ghibli kid app.
+</div>
+
+<main>
+  <section class="phone">
+    <div class="phone-label">Start screen</div>
+    <h1 class="title">Mouth <em>Munch</em></h1>
+    <p class="sub">Open wide to gobble flying emojis. Score as many as you can in <b>60 seconds</b>.</p>
+    <p class="label">Pick a speed</p>
+    <div class="chips">
+      <button class="chip">🐢 Easy</button>
+      <button class="chip on">🐰 Medium</button>
+      <button class="chip">🚀 Fast</button>
+    </div>
+    <button class="btn">Start Camera</button>
+    <button class="btn alt">🏆 View Scoreboard</button>
+  </section>
+
+  <section class="phone">
+    <div class="phone-label">In game</div>
+    <div class="hud">
+      <div class="hud-row">
+        <span class="pill timer">⏱ 47</span>
+        <span class="pill score">⭐ 14</span>
+        <span style="margin-left:auto; opacity:0.6;">↻</span>
+      </div>
+      <div style="margin-top:16px; display:flex; gap:8px; justify-content:center;">
+        <span style="opacity:0.4">💩</span>
+        <span style="font-size:24px;">🍕</span>
+        <span style="opacity:0.4">🍩</span>
+        <span style="opacity:0.4">🍪</span>
+        <span style="opacity:0.4">🍎</span>
+      </div>
+      <div class="face-hint">😋 Yum, keep munching</div>
+    </div>
+  </section>
+
+  <section class="phone">
+    <div class="phone-label">Time's up</div>
+    <h2 class="end-title">That was <em>fun!</em></h2>
+    <p class="end-sub">You munched <b>23</b> emojis</p>
+    <input class="name-input" placeholder="Your name" value="Leo">
+    <button class="btn">Save score</button>
+    <div class="board">
+      <h3>Top Munchers</h3>
+      <div class="row"><span class="r">🥇</span><span>Maya</span><span class="s">31</span></div>
+      <div class="row"><span class="r">🥈</span><span>Sam</span><span class="s">27</span></div>
+      <div class="row me"><span class="r">🥉</span><span>Leo</span><span class="s">23</span></div>
+      <div class="row"><span class="r">4</span><span>Dad</span><span class="s">18</span></div>
+      <div class="row"><span class="r">5</span><span>Mom</span><span class="s">12</span></div>
+    </div>
+    <button class="btn alt" style="margin-top:14px;">Play again</button>
+  </section>
+</main>
+</body>
+</html>

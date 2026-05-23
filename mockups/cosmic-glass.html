@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cosmic Glass — Mouth Munch mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    background: #08051a;
+    font-family: "Manrope", system-ui, sans-serif;
+    color: white;
+    min-height: 100%;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(60vmin 60vmin at 15% 10%, #ff3e8f 0%, transparent 60%),
+      radial-gradient(70vmin 70vmin at 85% 20%, #5b3cff 0%, transparent 55%),
+      radial-gradient(60vmin 60vmin at 50% 90%, #00d9ff 0%, transparent 55%),
+      radial-gradient(80vmin 80vmin at 10% 85%, #ff8a3d 0%, transparent 60%);
+    filter: blur(20px) saturate(1.2);
+  }
+  .nav {
+    position: sticky; top: 0; z-index: 5;
+    background: rgba(8,5,26,0.75);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    padding: 14px 18px;
+    font-weight: 700; font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex; justify-content: space-between;
+  }
+  .nav a { color: white; text-decoration: none; }
+  .vibe {
+    padding: 16px 18px;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    font-size: 14px; line-height: 1.5;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    position: relative; z-index: 4;
+  }
+  .vibe b { font-weight: 800; }
+  main {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; gap: 24px;
+    padding: 28px 16px 60px; align-items: center;
+  }
+  .phone {
+    width: 100%; max-width: 380px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(30px) saturate(1.3);
+    -webkit-backdrop-filter: blur(30px) saturate(1.3);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 28px;
+    padding: 28px 22px;
+    position: relative;
+    box-shadow:
+      0 20px 60px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .phone-label {
+    position: absolute; top: -12px; left: 22px;
+    background: rgba(255,255,255,0.95); color: #08051a;
+    font-weight: 800; font-size: 11px;
+    padding: 5px 12px; border-radius: 999px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .title {
+    font-size: 42px; font-weight: 800; line-height: 1.05;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 0%, #ffb8e0 50%, #b8e0ff 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    margin-bottom: 8px;
+  }
+  .sub {
+    font-size: 16px; font-weight: 500; line-height: 1.5;
+    color: rgba(255,255,255,0.75);
+    margin: 4px 0 24px;
+  }
+  .label {
+    font-size: 11px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.18em; color: rgba(255,255,255,0.5);
+    margin: 20px 0 10px;
+  }
+  .chips { display: flex; gap: 8px; }
+  .chip {
+    flex: 1;
+    padding: 14px 8px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.06);
+    color: white;
+    font: 700 14px "Manrope", sans-serif;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+  }
+  .chip.on {
+    background: linear-gradient(135deg, #ff3e8f, #5b3cff);
+    border-color: transparent;
+    box-shadow: 0 6px 20px rgba(255,62,143,0.5);
+  }
+  .btn {
+    display: block; width: 100%;
+    padding: 17px;
+    border-radius: 18px;
+    border: none;
+    background: linear-gradient(135deg, #ff3e8f 0%, #ff8a3d 100%);
+    color: white;
+    font: 800 18px "Manrope", sans-serif;
+    letter-spacing: -0.01em;
+    margin-top: 16px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255,62,143,0.4);
+  }
+  .btn.alt {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: none;
+    backdrop-filter: blur(10px);
+    font-size: 15px;
+    padding: 14px;
+  }
+  /* HUD */
+  .hud {
+    background:
+      radial-gradient(circle at 50% 50%, rgba(91,60,255,0.4), transparent 70%),
+      linear-gradient(135deg, #1a0f3d, #08051a);
+    border-radius: 22px;
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .hud-row { display: flex; gap: 8px; align-items: center; }
+  .pill {
+    padding: 9px 14px; border-radius: 999px;
+    font: 800 15px "Manrope", sans-serif;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .pill.timer {
+    background: linear-gradient(135deg, #5b3cff, #b8e0ff);
+    color: white;
+    box-shadow: 0 4px 16px rgba(91,60,255,0.5);
+  }
+  .pill.score {
+    background: linear-gradient(135deg, #ff3e8f, #ff8a3d);
+    color: white;
+    box-shadow: 0 4px 16px rgba(255,62,143,0.5);
+  }
+  .face-hint {
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    padding: 8px 14px; border-radius: 999px;
+    font-size: 13px; font-weight: 600;
+    margin: 14px auto 0; width: fit-content;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  /* End screen */
+  .end-title {
+    font-size: 38px; font-weight: 800;
+    background: linear-gradient(135deg, #ff3e8f, #ff8a3d);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center; line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .end-sub {
+    text-align: center; font-size: 16px; font-weight: 500;
+    color: rgba(255,255,255,0.7); margin-bottom: 18px;
+  }
+  .end-sub b { color: white; font-size: 30px; font-weight: 800; }
+  .name-input {
+    width: 100%; padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(10px);
+    color: white;
+    font: 600 17px "Manrope", sans-serif;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .name-input:focus {
+    outline: none; border-color: #ff3e8f;
+    background: rgba(255,62,143,0.1);
+  }
+  .name-input::placeholder { color: rgba(255,255,255,0.4); }
+  .board {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .board h3 {
+    font: 800 11px "Manrope", sans-serif;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 12px; text-align: center;
+  }
+  .row {
+    display: grid; grid-template-columns: 30px 1fr auto;
+    align-items: center; gap: 10px;
+    padding: 9px 6px;
+    font-weight: 600; font-size: 15px;
+  }
+  .row + .row { border-top: 1px solid rgba(255,255,255,0.06); }
+  .row .r { font-weight: 800; color: rgba(255,255,255,0.5); text-align: center; }
+  .row .s { font-weight: 800; }
+  .row.me {
+    background: linear-gradient(90deg, rgba(255,62,143,0.3), rgba(255,138,61,0.2));
+    border-radius: 12px; padding: 11px 12px;
+    margin: 6px -10px;
+    border-top: none;
+    border: 1px solid rgba(255,62,143,0.5);
+  }
+  .row.me + .row { border-top: none; }
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="./">← All designs</a>
+  <span>2 of 4</span>
+</div>
+<div class="vibe">
+  <b>Cosmic Glass</b> — Premium AR-app feel. Frosted glass panels over an animated gradient mesh. Manrope sans, subtle gradient text. Looks at home alongside Snapchat / Instagram filters.
+</div>
+
+<main>
+  <section class="phone">
+    <div class="phone-label">Start screen</div>
+    <h1 class="title">Mouth Munch 😋</h1>
+    <p class="sub">Open wide to gobble flying emojis. Score as many as you can in <b style="color:white">60 seconds</b>.</p>
+    <p class="label">Difficulty</p>
+    <div class="chips">
+      <button class="chip">🐢 Easy</button>
+      <button class="chip on">🐰 Medium</button>
+      <button class="chip">🚀 Fast</button>
+    </div>
+    <button class="btn">Start Camera</button>
+    <button class="btn alt">🏆 View Scoreboard</button>
+  </section>
+
+  <section class="phone">
+    <div class="phone-label">In game</div>
+    <div class="hud">
+      <div class="hud-row">
+        <span class="pill timer">⏱ 47</span>
+        <span class="pill score">⭐ 14</span>
+        <span style="margin-left:auto; opacity:0.6;">⋯</span>
+      </div>
+      <div style="margin-top:16px; display:flex; gap:8px; justify-content:center; opacity:0.85;">
+        <span style="opacity:0.4">💩</span>
+        <span style="font-size:24px; filter: drop-shadow(0 0 8px #ff3e8f);">🍕</span>
+        <span style="opacity:0.4">🍩</span>
+        <span style="opacity:0.4">🍪</span>
+        <span style="opacity:0.4">🍎</span>
+      </div>
+      <div class="face-hint">😋 Yum! Keep munching!</div>
+    </div>
+  </section>
+
+  <section class="phone">
+    <div class="phone-label">Time's up</div>
+    <h2 class="end-title">Time's Up</h2>
+    <p class="end-sub">You munched <b>23</b> emojis</p>
+    <input class="name-input" placeholder="Your name" value="Leo">
+    <button class="btn">Save Score</button>
+    <div class="board">
+      <h3>🏆 Top Munchers</h3>
+      <div class="row"><span class="r">🥇</span><span>Maya</span><span class="s">31</span></div>
+      <div class="row"><span class="r">🥈</span><span>Sam</span><span class="s">27</span></div>
+      <div class="row me"><span class="r">🥉</span><span>Leo</span><span class="s">23</span></div>
+      <div class="row"><span class="r">4</span><span>Dad</span><span class="s">18</span></div>
+      <div class="row"><span class="r">5</span><span>Mom</span><span class="s">12</span></div>
+    </div>
+    <button class="btn alt" style="margin-top:14px;">Play Again</button>
+  </section>
+</main>
+</body>
+</html>
