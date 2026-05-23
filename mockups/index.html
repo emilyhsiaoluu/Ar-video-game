@@ -187,8 +187,44 @@
     text-shadow: 0 0 8px #00f0ff;
     box-shadow: 0 0 16px rgba(0,240,255,0.3);
   }
+  /* Mario */
+  .mario {
+    background:
+      radial-gradient(ellipse 40px 20px at 18% 18%, #fff 0 100%, transparent 101%),
+      radial-gradient(ellipse 25px 14px at 14% 18%, #fff 0 100%, transparent 101%),
+      radial-gradient(ellipse 25px 14px at 22% 18%, #fff 0 100%, transparent 101%),
+      radial-gradient(ellipse 50px 24px at 80% 30%, #fff 0 100%, transparent 101%),
+      #5C94FC;
+  }
+  .mario::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 80px;
+    height: 28px;
+    background:
+      repeating-linear-gradient(90deg, #A04A14 0 28px, #6C2900 28px 30px);
+    border-top: 3px solid #000; border-bottom: 3px solid #000;
+  }
+  .mario .t {
+    font-family: "Press Start 2P", monospace;
+    font-size: 22px; line-height: 1.6;
+    color: #fff;
+    -webkit-text-stroke: 2px #000;
+    text-align: center;
+    position: relative;
+  }
+  .mario .t .r1 { color: #E40058; display: block; }
+  .mario .t .r2 { color: #FCBC00; display: block; }
+  .mario .b {
+    margin-top: 14px;
+    background: #E40058; color: #fff;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0 #000;
+    padding: 10px 22px;
+    font-family: "Press Start 2P", monospace;
+    font-size: 11px;
+    position: relative;
+  }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Fraunces:opsz,wght@9..144,500;9..144,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Fraunces:opsz,wght@9..144,500;9..144,900&family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
@@ -197,6 +233,17 @@
 </header>
 
 <main>
+  <a class="card mario" href="./mario.html">
+    <div class="preview">
+      <div class="t"><span class="r1">SUPER</span><span class="r2">MUNCH</span></div>
+      <div class="b">▶ PRESS START</div>
+    </div>
+    <div class="label">
+      <div class="name">★ Super Munch Bros</div>
+      <div class="desc">Classic 8-bit Mario vibe. Press Start 2P pixel font, sky + clouds + bricks + ?-blocks, coin counter for score. Pure Nintendo nostalgia.</div>
+    </div>
+  </a>
+
   <a class="card pop" href="./wonder-pop.html">
     <div class="preview">
       <div class="t">Mouth<br><em>Munch!</em> 😋</div>
