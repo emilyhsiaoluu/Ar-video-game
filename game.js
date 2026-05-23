@@ -11,18 +11,28 @@ const ctx         = canvas.getContext("2d");
 const hud         = document.getElementById("hud");
 const scoreChip   = document.getElementById("scoreChip");
 const scoreNum    = document.getElementById("scoreNum");
-const goalNum     = document.getElementById("goalNum");
+const timerChip   = document.getElementById("timerChip");
+const timerNum    = document.getElementById("timerNum");
 const hintEl      = document.getElementById("hint");
 const startScreen = document.getElementById("startScreen");
 const startBtn    = document.getElementById("startBtn");
-const startPicker = document.getElementById("startPicker");
+const viewScoresBtn = document.getElementById("viewScoresBtn");
 const hudPicker   = document.getElementById("hudPicker");
 const diffPicker  = document.getElementById("difficultyPicker");
 const restartBtn  = document.getElementById("restartBtn");
-const winScreen   = document.getElementById("winScreen");
-const winScore    = document.getElementById("winScore");
-const keepBtn     = document.getElementById("keepBtn");
-const againBtn    = document.getElementById("againBtn");
+const endScreen   = document.getElementById("endScreen");
+const endScore    = document.getElementById("endScore");
+const nameEntry   = document.getElementById("nameEntry");
+const nameInput   = document.getElementById("nameInput");
+const saveScoreBtn = document.getElementById("saveScoreBtn");
+const playAgainBtn = document.getElementById("playAgainBtn");
+const backToStartBtn = document.getElementById("backToStartBtn");
+const scoreList   = document.getElementById("scoreList");
+const scoreListEmpty = document.getElementById("scoreListEmpty");
+const scoresOnlyScreen = document.getElementById("scoresOnlyScreen");
+const scoreListOnly = document.getElementById("scoreListOnly");
+const scoreListOnlyEmpty = document.getElementById("scoreListOnlyEmpty");
+const closeScoresBtn = document.getElementById("closeScoresBtn");
 const errorScreen = document.getElementById("errorScreen");
 const errorMsg    = document.getElementById("errorMsg");
 const retryBtn    = document.getElementById("retryBtn");
@@ -36,8 +46,10 @@ const DIFFICULTY = {
   medium: { label: "🐰 Medium", speed: 1.0,  count: 7 },
   fast:   { label: "🚀 Fast",   speed: 1.5,  count: 9 },
 };
-const GOAL_STEP = 10;
+const ROUND_DURATION = 60;
 const JAW_OPEN_THRESHOLD = 0.3;
+const SCORES_KEY = "mouthmunch-scoreboard-v1";
+const NAME_KEY = "mouthmunch-name";
 
 // ---- State ----
 let faceLandmarker = null;
@@ -45,7 +57,7 @@ let stream = null;
 let running = false;
 let celebrating = false;
 let score = 0;
-let goal = GOAL_STEP;
+let timeLeft = ROUND_DURATION;
 let currentEmoji = "💩";
 let difficulty = "medium";
 
@@ -72,15 +84,13 @@ const dist   = (ax, ay, bx, by) => Math.hypot(ax - bx, ay - by);
    UI: emoji + difficulty pickers
    ============================================================ */
 function buildPickers() {
-  for (const container of [startPicker, hudPicker]) {
-    EMOJIS.forEach((emoji) => {
-      const btn = document.createElement("button");
-      btn.className = "emoji-btn" + (emoji === currentEmoji ? " selected" : "");
-      btn.textContent = emoji;
-      btn.addEventListener("click", () => selectEmoji(emoji));
-      container.appendChild(btn);
-    });
-  }
+  EMOJIS.forEach((emoji) => {
+    const btn = document.createElement("button");
+    btn.className = "emoji-btn" + (emoji === currentEmoji ? " selected" : "");
+    btn.textContent = emoji;
+    btn.addEventListener("click", () => selectEmoji(emoji));
+    hudPicker.appendChild(btn);
+  });
   Object.entries(DIFFICULTY).forEach(([key, info]) => {
     const btn = document.createElement("button");
     btn.className = "diff-btn" + (key === difficulty ? " selected" : "");
@@ -234,7 +244,7 @@ function showError(msg) {
 
 function resetGame() {
   score = 0;
-  goal = GOAL_STEP;
+  timeLeft = ROUND_DURATION;
   celebrating = false;
   emojis = [];
   particles = [];
@@ -244,6 +254,7 @@ function resetGame() {
   const target = DIFFICULTY[difficulty].count;
   for (let i = 0; i < Math.ceil(target / 2); i++) spawnEmoji();
   updateScoreUI(false);
+  updateTimerUI();
 }
 
 /* ============================================================
@@ -355,7 +366,6 @@ function eat(e) {
   });
   playDing();
   updateScoreUI(true);
-  if (!celebrating && score >= goal) win();
 }
 
 /* ============================================================
@@ -636,12 +646,16 @@ function render() {
    ============================================================ */
 function updateScoreUI(pop) {
   scoreNum.textContent = score;
-  goalNum.textContent = goal;
   if (pop) {
     scoreChip.classList.remove("pop");
     void scoreChip.offsetWidth; // restart the animation
     scoreChip.classList.add("pop");
   }
+}
+
+function updateTimerUI() {
+  timerNum.textContent = Math.ceil(timeLeft);
+  timerChip.classList.toggle("urgent", timeLeft <= 10 && !celebrating);
 }
 
 function updateHint() {
@@ -653,32 +667,134 @@ function updateHint() {
 }
 
 /* ============================================================
-   Win
+   Timer + end of round
    ============================================================ */
-function win() {
+function tickTimer(dt) {
+  if (celebrating) return;
+  timeLeft -= dt;
+  if (timeLeft <= 0) {
+    timeLeft = 0;
+    endRound();
+  }
+  updateTimerUI();
+}
+
+function endRound() {
   celebrating = true;
-  winScore.textContent = score;
-  winScreen.classList.remove("hidden");
+  endScore.textContent = score;
+  nameEntry.classList.remove("hidden");
+  saveScoreBtn.disabled = false;
+  nameInput.value = loadName();
+  renderScoreboard(scoreList, scoreListEmpty, null);
+  endScreen.classList.remove("hidden");
   spawnConfetti();
   playWin();
 }
 
-keepBtn.addEventListener("click", () => {
-  celebrating = false;
-  goal += GOAL_STEP;
-  winScreen.classList.add("hidden");
-  updateScoreUI(false);
+/* ============================================================
+   Scoreboard storage
+   ============================================================ */
+function loadScores() {
+  try { return JSON.parse(localStorage.getItem(SCORES_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveScores(scores) {
+  try { localStorage.setItem(SCORES_KEY, JSON.stringify(scores)); } catch {}
+}
+
+function addScore(name, score, difficulty) {
+  const scores = loadScores();
+  const entry = {
+    name: (name || "Anonymous").trim().slice(0, 12) || "Anonymous",
+    score,
+    difficulty,
+    date: Date.now(),
+  };
+  scores.push(entry);
+  scores.sort((a, b) => b.score - a.score || a.date - b.date);
+  if (scores.length > 25) scores.length = 25;
+  saveScores(scores);
+  return entry;
+}
+
+function loadName() {
+  try { return localStorage.getItem(NAME_KEY) || ""; } catch { return ""; }
+}
+
+function rememberName(name) {
+  try { localStorage.setItem(NAME_KEY, name); } catch {}
+}
+
+function renderScoreboard(listEl, emptyEl, highlightEntry) {
+  const scores = loadScores().slice(0, 10);
+  listEl.innerHTML = "";
+  if (scores.length === 0) {
+    emptyEl.classList.remove("hidden");
+    return;
+  }
+  emptyEl.classList.add("hidden");
+  scores.forEach((entry, i) => {
+    const li = document.createElement("li");
+    const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}`;
+    li.innerHTML = `
+      <span class="rank">${medal}</span>
+      <span class="name"></span>
+      <span class="score">⭐ ${entry.score}</span>
+    `;
+    li.querySelector(".name").textContent = entry.name;
+    if (highlightEntry &&
+        entry.name === highlightEntry.name &&
+        entry.score === highlightEntry.score &&
+        entry.date === highlightEntry.date) {
+      li.classList.add("new");
+    }
+    listEl.appendChild(li);
+  });
+}
+
+saveScoreBtn.addEventListener("click", () => {
+  const name = nameInput.value.trim();
+  rememberName(name);
+  const entry = addScore(name, score, difficulty);
+  nameEntry.classList.add("hidden");
+  renderScoreboard(scoreList, scoreListEmpty, entry);
 });
 
-againBtn.addEventListener("click", () => {
-  winScreen.classList.add("hidden");
+playAgainBtn.addEventListener("click", () => {
+  endScreen.classList.add("hidden");
   resetGame();
+});
+
+backToStartBtn.addEventListener("click", () => {
+  endScreen.classList.add("hidden");
+  hud.classList.add("hidden");
+  startScreen.classList.remove("hidden");
+  stopGame();
+});
+
+viewScoresBtn.addEventListener("click", () => {
+  renderScoreboard(scoreListOnly, scoreListOnlyEmpty, null);
+  scoresOnlyScreen.classList.remove("hidden");
+});
+
+closeScoresBtn.addEventListener("click", () => {
+  scoresOnlyScreen.classList.add("hidden");
 });
 
 restartBtn.addEventListener("click", () => {
-  winScreen.classList.add("hidden");
+  endScreen.classList.add("hidden");
   resetGame();
 });
+
+function stopGame() {
+  running = false;
+  if (stream) {
+    stream.getTracks().forEach((t) => t.stop());
+    stream = null;
+  }
+  startBtn.disabled = false;
+}
 
 /* ============================================================
    Main loop
@@ -702,6 +818,7 @@ function loop() {
   if (!celebrating) {
     maybeSpawn(dt);
     handleEating();
+    tickTimer(dt);
   }
 
   render();

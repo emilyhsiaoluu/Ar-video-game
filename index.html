@@ -24,7 +24,8 @@
   <!-- In-game heads-up display -->
   <div id="hud" class="hidden">
     <div class="topbar">
-      <div id="scoreChip" class="score-chip">⭐ <span id="scoreNum">0</span> / <span id="goalNum">10</span></div>
+      <div id="timerChip" class="timer-chip">⏱ <span id="timerNum">60</span></div>
+      <div id="scoreChip" class="score-chip">⭐ <span id="scoreNum">0</span></div>
       <div id="hudPicker" class="hud-picker"></div>
       <button id="restartBtn" class="icon-btn" title="Start over">🔄</button>
     </div>
@@ -35,28 +36,49 @@
   <div id="startScreen" class="overlay">
     <div class="panel">
       <h1 class="title">Mouth Munch! <span class="wiggle">😋</span></h1>
-      <p class="subtitle">Flying emojis zoom around the screen.<br/>Open your mouth to gobble them up and score stars!</p>
+      <p class="subtitle">Open wide to gobble flying emojis!<br/>Get the highest score in 60 seconds. ⏱</p>
 
-      <p class="label">1. Pick your snack</p>
-      <div id="startPicker" class="picker"></div>
-
-      <p class="label">2. Pick a speed</p>
+      <p class="label">Pick a speed</p>
       <div id="difficultyPicker" class="difficulty"></div>
 
       <button id="startBtn" class="big-btn">▶ Start Camera</button>
+      <button id="viewScoresBtn" class="install-btn">🏆 View Scoreboard</button>
       <button id="installBtn" class="install-btn hidden">📲 Install App</button>
       <p id="iosInstallHint" class="ios-hint hidden">📲 To install on iPhone/iPad: tap the <strong>Share</strong> button, then <strong>"Add to Home Screen"</strong>.</p>
       <p class="tip">Tip: stand back so your whole face fits, and find good light. 💡<br/>Your camera stays on your device — nothing is uploaded.</p>
     </div>
   </div>
 
-  <!-- Win celebration -->
-  <div id="winScreen" class="overlay hidden">
-    <div class="panel win-panel">
-      <h1 class="title">🎉 YOU WIN! 🎉</h1>
-      <p class="subtitle">Awesome munching!<br/>You gobbled <span id="winScore">0</span> emojis!</p>
-      <button id="keepBtn" class="big-btn">Keep Playing ▶</button>
-      <button id="againBtn" class="big-btn secondary">Play Again 🔄</button>
+  <!-- Time's up + scoreboard -->
+  <div id="endScreen" class="overlay hidden">
+    <div class="panel end-panel">
+      <h1 class="title">⏰ Time's Up!</h1>
+      <p class="subtitle">You munched <span id="endScore">0</span> emojis!</p>
+
+      <div id="nameEntry" class="name-entry">
+        <p class="label">Type your name for the scoreboard</p>
+        <input id="nameInput" type="text" maxlength="12" placeholder="Your name" autocomplete="off" autocapitalize="words" />
+        <button id="saveScoreBtn" class="big-btn">💾 Save Score</button>
+      </div>
+
+      <div id="scoreboardBox" class="scoreboard">
+        <h2 class="scoreboard-title">🏆 Top Munchers</h2>
+        <ol id="scoreList" class="score-list"></ol>
+        <p id="scoreListEmpty" class="score-empty hidden">🌟 Be the first to save a score!</p>
+      </div>
+
+      <button id="playAgainBtn" class="big-btn secondary">🔄 Play Again</button>
+      <button id="backToStartBtn" class="install-btn">🏠 Back to Start</button>
+    </div>
+  </div>
+
+  <!-- Scoreboard-only view (from start screen) -->
+  <div id="scoresOnlyScreen" class="overlay hidden">
+    <div class="panel">
+      <h1 class="title">🏆 Top Munchers</h1>
+      <ol id="scoreListOnly" class="score-list"></ol>
+      <p id="scoreListOnlyEmpty" class="score-empty hidden">🌟 No scores yet — play a round to be the first!</p>
+      <button id="closeScoresBtn" class="big-btn">← Back</button>
     </div>
   </div>
 
