@@ -1,6 +1,6 @@
 // Mouth Munch — service worker.
 // Bump VERSION when shipping app updates to invalidate old caches.
-const VERSION = "mouth-munch-v3";
+const VERSION = "mouth-munch-v4";
 const SHELL_CACHE = `${VERSION}-shell`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 

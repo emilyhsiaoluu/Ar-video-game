@@ -56,6 +56,9 @@ let faceLandmarker = null;
 let stream = null;
 let running = false;
 let celebrating = false;
+let recovering = false;
+let videoStalledSince = 0;
+let lastObservedVideoTime = -1;
 let score = 0;
 let timeLeft = ROUND_DURATION;
 let currentEmoji = "💩";
@@ -184,6 +187,14 @@ async function loadFaceModel() {
 }
 
 async function startCamera() {
+  // Clean up any previous stream so iOS Safari doesn't hand back a stale black feed.
+  if (stream) {
+    stream.getTracks().forEach((t) => t.stop());
+    stream = null;
+  }
+  if (video.srcObject) {
+    video.srcObject = null;
+  }
   stream = await navigator.mediaDevices.getUserMedia({
     video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } },
     audio: false,
@@ -193,6 +204,24 @@ async function startCamera() {
   if (!video.videoWidth) {
     await new Promise((res) => (video.onloadedmetadata = res));
   }
+  videoStalledSince = 0;
+  lastObservedVideoTime = -1;
+}
+
+async function recoverCamera() {
+  if (recovering) return;
+  recovering = true;
+  hintEl.textContent = "📷 Reconnecting camera…";
+  try {
+    await startCamera();
+  } catch (err) {
+    recovering = false;
+    running = false;
+    showError("Camera disconnected. Tap retry to reconnect.");
+    return;
+  }
+  recovering = false;
+  lastFrameTime = performance.now();
 }
 
 /* ============================================================
@@ -442,6 +471,31 @@ function updateFloaters(dt) {
     f.life += dt;
     f.y += f.vy * dt;
     if (f.life >= f.maxLife) floaters.splice(i, 1);
+  }
+}
+
+/* ============================================================
+   Video stall watchdog — catches iOS's silent black-frame bug
+   when the stream stops producing frames after backgrounding.
+   ============================================================ */
+function checkVideoHealth(dt) {
+  if (!running || recovering) return;
+  if (!stream) return;
+  // Dead track? Recover immediately.
+  const tracks = stream.getVideoTracks();
+  if (tracks.length === 0 || tracks.some((t) => t.readyState === "ended")) {
+    recoverCamera();
+    return;
+  }
+  if (!video.videoWidth) return;
+  if (video.currentTime !== lastObservedVideoTime) {
+    lastObservedVideoTime = video.currentTime;
+    videoStalledSince = 0;
+  } else {
+    videoStalledSince += dt;
+    if (videoStalledSince > 2.5) {
+      recoverCamera();
+    }
   }
 }
 
@@ -809,6 +863,7 @@ function loop() {
 
   resizeCanvas();
   detectFace();
+  checkVideoHealth(dt);
 
   faceMissingTime = mouth.visible ? 0 : faceMissingTime + dt;
 
@@ -841,7 +896,12 @@ retryBtn.addEventListener("click", () => {
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden && running) {
     lastFrameTime = performance.now();
+    videoStalledSince = 0;
+    lastObservedVideoTime = -1;
     if (video.paused) video.play().catch(() => {});
+    if (stream && stream.getVideoTracks().some((t) => t.readyState === "ended")) {
+      recoverCamera();
+    }
   }
 });
 
