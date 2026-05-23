@@ -42,9 +42,9 @@ const loaderText  = document.getElementById("loaderText");
 // ---- Config ----
 const EMOJIS = ["💩","🍕","🍩","🍪","🍎","🍌","🍔","🍓","🧁","🍇","⭐","🐸","🍉","🍭"];
 const DIFFICULTY = {
-  easy:   { label: "🐢 Easy",   speed: 0.65, count: 5 },
-  medium: { label: "🐰 Medium", speed: 1.0,  count: 7 },
-  fast:   { label: "🚀 Fast",   speed: 1.5,  count: 9 },
+  easy:   { world: "1-1", emoji: "🐢", name: "EASY",   speed: 0.65, count: 5 },
+  medium: { world: "1-2", emoji: "🍄", name: "MEDIUM", speed: 1.0,  count: 7 },
+  fast:   { world: "1-3", emoji: "⭐", name: "FAST",   speed: 1.5,  count: 9 },
 };
 const ROUND_DURATION = 60;
 const JAW_OPEN_THRESHOLD = 0.3;
@@ -97,8 +97,12 @@ function buildPickers() {
   Object.entries(DIFFICULTY).forEach(([key, info]) => {
     const btn = document.createElement("button");
     btn.className = "diff-btn" + (key === difficulty ? " selected" : "");
-    btn.textContent = info.label;
     btn.dataset.key = key;
+    btn.innerHTML = `
+      <span>${info.world}</span>
+      <span class="emoji">${info.emoji}</span>
+      <span>${info.name}</span>
+    `;
     btn.addEventListener("click", () => selectDifficulty(key));
     diffPicker.appendChild(btn);
   });
@@ -211,7 +215,7 @@ async function startCamera() {
 async function recoverCamera() {
   if (recovering) return;
   recovering = true;
-  hintEl.textContent = "📷 Reconnecting camera…";
+  hintEl.textContent = "📷 RECONNECTING…";
   try {
     await startCamera();
   } catch (err) {
@@ -232,9 +236,9 @@ async function start() {
   loader.classList.remove("hidden");
   ensureAudio();
   try {
-    loaderText.textContent = "Turning on the camera…";
+    loaderText.textContent = "STARTING CAMERA…";
     await startCamera();
-    loaderText.textContent = "Waking up the face tracker…";
+    loaderText.textContent = "LOADING FACE TRACKER…";
     await loadFaceModel();
   } catch (err) {
     loader.classList.add("hidden");
@@ -688,7 +692,7 @@ function drawFloaters() {
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (video.videoWidth) drawVideo();
-  else { ctx.fillStyle = "#1b0b3a"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+  else { ctx.fillStyle = "#5C94FC"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
   drawEatZone();
   drawEmojis();
   drawParticles();
@@ -714,10 +718,10 @@ function updateTimerUI() {
 
 function updateHint() {
   if (!mouth.visible) {
-    if (faceMissingTime > 0.6) hintEl.textContent = "👀 I can't see you — move into the frame!";
+    if (faceMissingTime > 0.6) hintEl.textContent = "👀 MOVE INTO FRAME!";
     return;
   }
-  hintEl.textContent = mouth.open ? "😋 Yum! Keep munching!" : "😮 Open wide to munch!";
+  hintEl.textContent = mouth.open ? "😋 YUM! KEEP GOING!" : "😮 OPEN WIDE!";
 }
 
 /* ============================================================
@@ -790,11 +794,11 @@ function renderScoreboard(listEl, emptyEl, highlightEntry) {
   emptyEl.classList.add("hidden");
   scores.forEach((entry, i) => {
     const li = document.createElement("li");
-    const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}`;
+    const rank = i === 0 ? "1ST" : i === 1 ? "2ND" : i === 2 ? "3RD" : `${i + 1}TH`;
     li.innerHTML = `
-      <span class="rank">${medal}</span>
+      <span class="rank">${rank}</span>
       <span class="name"></span>
-      <span class="score">⭐ ${entry.score}</span>
+      <span class="score">×${entry.score}</span>
     `;
     li.querySelector(".name").textContent = entry.name;
     if (highlightEntry &&
