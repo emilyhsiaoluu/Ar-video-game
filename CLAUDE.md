@@ -20,7 +20,9 @@ heading to the iOS App Store at $1.99 via Capacitor.
   (`manifest.webmanifest`, `sw.js`, `icons/`).
 - Face tracking via MediaPipe Face Landmarker (CDN), mouth-open from the
   `jawOpen` blendshape with a lip-gap fallback.
-- Deployed via GitHub Pages (and possibly Vercel) from the
-  `claude/mouth-tracking-emoji-game-oLFIs` branch.
+- Deployed via GitHub Pages from the
+  `claude/mouth-tracking-emoji-game-oLFIs` branch. Live URL:
+  `https://emilyhsiaoluu.github.io/Ar-video-game/` (note the capital A).
+  Not on Vercel.
 - When shipping shell changes, bump `VERSION` in `sw.js` so caches refresh.
 - Keep the kid-friendly tone: bright, big buttons, generous eat zone.
