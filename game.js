@@ -46,7 +46,8 @@ const DIFFICULTY = {
   medium: { world: "1-2", emoji: "🍄", name: "MEDIUM", speed: 1.0,  count: 7 },
   fast:   { world: "1-3", emoji: "⭐", name: "FAST",   speed: 1.5,  count: 9 },
 };
-const ROUND_DURATION = 60;
+const ROUND_DURATION = 30;
+const COUNTDOWN_AT = 5;
 const JAW_OPEN_THRESHOLD = 0.3;
 const SCORES_KEY = "mouthmunch-scoreboard-v1";
 const NAME_KEY = "mouthmunch-name";
@@ -61,6 +62,7 @@ let videoStalledSince = 0;
 let lastObservedVideoTime = -1;
 let score = 0;
 let timeLeft = ROUND_DURATION;
+let lastCountdownTick = -1;
 let currentEmoji = "💩";
 let difficulty = "medium";
 
@@ -278,6 +280,7 @@ function showError(msg) {
 function resetGame() {
   score = 0;
   timeLeft = ROUND_DURATION;
+  lastCountdownTick = -1;
   celebrating = false;
   emojis = [];
   particles = [];
@@ -697,6 +700,55 @@ function render() {
   drawEmojis();
   drawParticles();
   drawFloaters();
+  drawCountdown();
+}
+
+function drawCountdown() {
+  if (celebrating || timeLeft <= 0 || timeLeft > COUNTDOWN_AT) return;
+  const num = Math.ceil(timeLeft);
+  // Progress through the current second: 0 just appeared, 1 about to tick.
+  const progress = clamp(1 - (timeLeft - (num - 1)), 0, 1);
+
+  // Pulsing red vignette behind the number.
+  const pulse = 0.35 + 0.25 * Math.sin(performance.now() * 0.02);
+  const grad = ctx.createRadialGradient(
+    canvas.width / 2, canvas.height / 2, 0,
+    canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) * 0.75
+  );
+  grad.addColorStop(0, "rgba(228, 0, 88, 0)");
+  grad.addColorStop(1, `rgba(228, 0, 88, ${pulse})`);
+  ctx.save();
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.restore();
+
+  // Bouncy number: scales in fast, holds, fades + grows out.
+  const scale = progress < 0.15
+    ? 0.3 + (progress / 0.15) * 0.9   // 0.3 → 1.2
+    : progress < 0.5
+      ? 1.2 - ((progress - 0.15) / 0.35) * 0.2  // 1.2 → 1.0
+      : 1.0 + (progress - 0.5) * 0.4; // gently grow during fade-out
+  const opacity = progress > 0.75 ? clamp(1 - (progress - 0.75) / 0.25, 0, 1) : 1;
+
+  const unit = Math.min(canvas.width, canvas.height);
+  const size = unit * 0.5 * scale;
+
+  ctx.save();
+  ctx.globalAlpha = opacity;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.font = `${size}px "Press Start 2P", monospace`;
+  ctx.lineWidth = size * 0.1;
+  ctx.lineJoin = "round";
+  // White shadow ring
+  ctx.strokeStyle = "rgba(0,0,0,0.6)";
+  ctx.strokeText(num.toString(), canvas.width / 2 + size * 0.05, canvas.height / 2 + size * 0.05);
+  // Black outline + red fill (Mario-coin vibe)
+  ctx.strokeStyle = "#000";
+  ctx.strokeText(num.toString(), canvas.width / 2, canvas.height / 2);
+  ctx.fillStyle = "#FCBC00";
+  ctx.fillText(num.toString(), canvas.width / 2, canvas.height / 2);
+  ctx.restore();
 }
 
 /* ============================================================
@@ -713,7 +765,7 @@ function updateScoreUI(pop) {
 
 function updateTimerUI() {
   timerNum.textContent = Math.ceil(timeLeft);
-  timerChip.classList.toggle("urgent", timeLeft <= 10 && !celebrating);
+  timerChip.classList.toggle("urgent", timeLeft <= COUNTDOWN_AT && !celebrating);
 }
 
 function updateHint() {
@@ -730,11 +782,25 @@ function updateHint() {
 function tickTimer(dt) {
   if (celebrating) return;
   timeLeft -= dt;
+  if (timeLeft > 0 && timeLeft <= COUNTDOWN_AT) {
+    const currentTick = Math.ceil(timeLeft);
+    if (currentTick !== lastCountdownTick && currentTick > 0) {
+      lastCountdownTick = currentTick;
+      playTick(currentTick);
+    }
+  }
   if (timeLeft <= 0) {
     timeLeft = 0;
     endRound();
   }
   updateTimerUI();
+}
+
+function playTick(n) {
+  if (!audioCtx) return;
+  const freq = 480 + (COUNTDOWN_AT - n) * 80;
+  tone(freq, 0, 0.12, 0.45, "square");
+  tone(freq * 0.5, 0, 0.06, 0.2, "square");
 }
 
 function endRound() {
