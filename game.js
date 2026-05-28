@@ -49,6 +49,7 @@ const DIFFICULTY = {
 const ROUND_DURATION = 30;
 const COUNTDOWN_AT = 5;
 const JAW_OPEN_THRESHOLD = 0.3;
+const JAW_CLOSE_THRESHOLD = 0.18;
 const SCORES_KEY = "mouthmunch-scoreboard-v1";
 const NAME_KEY = "mouthmunch-name";
 
@@ -70,6 +71,7 @@ let emojis = [];
 let particles = [];
 let floaters = [];
 let spawnCooldown = 0;
+let mouthWasOpen = false;
 let lastVideoTime = -1;
 let lastFrameTime = performance.now();
 
@@ -286,6 +288,7 @@ function resetGame() {
   particles = [];
   floaters = [];
   spawnCooldown = 0;
+  mouthWasOpen = false;
   // Pre-fill the board so there's something to eat right away.
   const target = DIFFICULTY[difficulty].count;
   for (let i = 0; i < Math.ceil(target / 2); i++) spawnEmoji();
@@ -382,10 +385,17 @@ function updateEmojis(dt) {
 }
 
 function handleEating() {
-  if (!mouth.visible || !mouth.open) return;
+  if (!mouth.visible) {
+    mouthWasOpen = false;
+    return;
+  }
+  // Chomp = open → close transition. Only the closing moment counts.
+  const justClosed = mouthWasOpen && !mouth.open;
+  mouthWasOpen = mouth.open;
+  if (!justClosed) return;
   for (let i = emojis.length - 1; i >= 0; i--) {
     const e = emojis[i];
-    if (dist(mouth.x, mouth.y, e.x, e.y) < mouth.eatRadius + e.r * 0.6) {
+    if (dist(mouth.x, mouth.y, e.x, e.y) < mouth.eatRadius + e.r * 0.5) {
       emojis.splice(i, 1);
       eat(e);
     }
@@ -557,10 +567,16 @@ function detectFace() {
   mouth.visible = true;
   mouth.x = (upper.x + lower.x) / 2;
   mouth.y = (upper.y + lower.y) / 2;
-  mouth.open = jaw > JAW_OPEN_THRESHOLD || gapRatio > 0.32;
+  // Hysteresis so noisy frames don't flicker the open/closed state and
+  // accidentally trigger a chomp.
+  if (jaw > JAW_OPEN_THRESHOLD || gapRatio > 0.32) {
+    mouth.open = true;
+  } else if (jaw < JAW_CLOSE_THRESHOLD && gapRatio < 0.22) {
+    mouth.open = false;
+  }
   mouth.openAmount = clamp(Math.max(jaw, gapRatio), 0, 1);
-  // A generous, kid-friendly eat zone that grows as the mouth opens wider.
-  mouth.eatRadius = mouthWidth * 0.8 + unit * 0.03 + mouth.openAmount * unit * 0.05;
+  // Tighter eat zone — has to actually be on the snack to chomp it.
+  mouth.eatRadius = mouthWidth * 0.45 + unit * 0.012 + mouth.openAmount * unit * 0.02;
 }
 
 /* ============================================================
@@ -773,7 +789,7 @@ function updateHint() {
     if (faceMissingTime > 0.6) hintEl.textContent = "👀 MOVE INTO FRAME!";
     return;
   }
-  hintEl.textContent = mouth.open ? "😋 YUM! KEEP GOING!" : "😮 OPEN WIDE!";
+  hintEl.textContent = mouth.open ? "😋 CHOMP DOWN!" : "😮 OPEN WIDE!";
 }
 
 /* ============================================================
