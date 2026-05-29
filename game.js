@@ -18,6 +18,8 @@ const startScreen = document.getElementById("startScreen");
 const startBtn    = document.getElementById("startBtn");
 const viewScoresBtn = document.getElementById("viewScoresBtn");
 const hudPicker   = document.getElementById("hudPicker");
+const hudPickerBtn = document.getElementById("hudPickerBtn");
+const diffName    = document.getElementById("diffName");
 const diffPicker  = document.getElementById("difficultyPicker");
 const restartBtn  = document.getElementById("restartBtn");
 const endScreen   = document.getElementById("endScreen");
@@ -103,13 +105,14 @@ function buildPickers() {
     btn.className = "diff-btn" + (key === difficulty ? " selected" : "");
     btn.dataset.key = key;
     btn.innerHTML = `
-      <span>${info.world}</span>
       <span class="emoji">${info.emoji}</span>
-      <span>${info.name}</span>
+      <span class="world-num">${info.world}</span>
     `;
     btn.addEventListener("click", () => selectDifficulty(key));
     diffPicker.appendChild(btn);
   });
+  diffName.textContent = DIFFICULTY[difficulty].name;
+  hudPickerBtn.textContent = currentEmoji;
 }
 
 function selectEmoji(emoji) {
@@ -117,6 +120,8 @@ function selectEmoji(emoji) {
   document.querySelectorAll(".emoji-btn").forEach((b) => {
     b.classList.toggle("selected", b.textContent === emoji);
   });
+  hudPickerBtn.textContent = emoji;
+  hudPicker.classList.remove("open");
   // Swap snacks already on screen so the change is instant and obvious.
   emojis.forEach((e) => (e.char = emoji));
 }
@@ -126,7 +131,12 @@ function selectDifficulty(key) {
   document.querySelectorAll(".diff-btn").forEach((b) => {
     b.classList.toggle("selected", b.dataset.key === key);
   });
+  diffName.textContent = DIFFICULTY[key].name;
 }
+
+hudPickerBtn.addEventListener("click", () => {
+  hudPicker.classList.toggle("open");
+});
 
 /* ============================================================
    Audio — a happy "da-ding!" on every munch.

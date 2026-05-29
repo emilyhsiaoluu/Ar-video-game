@@ -26,12 +26,13 @@
     <div class="topbar">
       <div id="timerChip" class="nes-stat time">
         <span class="stat-label">TIME</span>
-        <span class="stat-val"><span id="timerNum">60</span></span>
+        <span class="stat-val"><span id="timerNum">30</span></span>
       </div>
       <div id="scoreChip" class="nes-stat coin">
         <span class="stat-label">MUNCH</span>
         <span class="stat-val"><span class="coin-icon"></span>×<span id="scoreNum">0</span></span>
       </div>
+      <button id="hudPickerBtn" class="icon-btn picker-btn" title="Change snack">💩</button>
       <button id="restartBtn" class="icon-btn" title="Start over">↻</button>
     </div>
     <div id="hudPicker" class="hud-picker"></div>
@@ -46,20 +47,18 @@
         <span class="smb-row coin-text">MUNCH</span>
         <span class="smb-row blue">BROS</span>
       </h1>
-      <div class="smb-em">😋 OPEN MOUTH = EAT!</div>
+      <p class="subtitle">CHOMP FLYING SNACKS · 30 SECONDS</p>
 
-      <div class="info-block">
-        Eat as many flying snacks as you can in <b>30 SECONDS</b>!<br/>Open wide to gobble.
+      <div class="worlds-wrap">
+        <p class="label">SELECT WORLD</p>
+        <div id="difficultyPicker" class="worlds"></div>
+        <p id="diffName" class="diff-name">MEDIUM</p>
       </div>
 
-      <p class="label">▼ PICK A WORLD ▼</p>
-      <div id="difficultyPicker" class="worlds"></div>
-
       <button id="startBtn" class="brick-btn red">▶ PRESS START</button>
-      <button id="viewScoresBtn" class="brick-btn small">🏆 HIGH SCORES</button>
-      <button id="installBtn" class="brick-btn small hidden">📲 INSTALL APP</button>
-      <p id="iosInstallHint" class="ios-hint hidden">📲 INSTALL: tap the <b>Share</b> button, then <b>"Add to Home Screen"</b>.</p>
-      <p class="tip">TIP: stand back so your whole face fits.<br/>Camera stays on your device — nothing uploaded.</p>
+      <button id="viewScoresBtn" class="brick-btn ghost">🏆 HIGH SCORES</button>
+      <button id="installBtn" class="brick-btn ghost hidden">📲 INSTALL APP</button>
+      <p id="iosInstallHint" class="ios-hint hidden">Tap <b>Share</b> → <b>"Add to Home Screen"</b> to install.</p>
     </div>
     <div class="ground"></div>
   </div>
