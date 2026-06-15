@@ -270,7 +270,7 @@ html, body {
 
 .ground {
   position: relative;
-  height: calc(32px + env(safe-area-inset-bottom));
+  height: calc(22px + env(safe-area-inset-bottom));
   flex-shrink: 0;
   background:
     repeating-linear-gradient(
@@ -326,17 +326,14 @@ html, body {
 }
 
 .subtitle {
-  display: inline-block;
   font-family: "Press Start 2P", monospace;
-  font-size: 11px;
-  color: var(--black);
-  background: var(--coin);
-  border: 3px solid var(--black);
-  box-shadow: 3px 3px 0 var(--black);
-  padding: 8px 14px;
-  letter-spacing: 0.1em;
-  margin: 0 0 40px;
+  font-size: 10px;
+  color: var(--white);
+  -webkit-text-stroke: 1px var(--black);
+  letter-spacing: 0.18em;
+  margin: 0 0 44px;
   line-height: 1;
+  opacity: 0.95;
 }
 
 .label {
@@ -355,7 +352,7 @@ html, body {
 
 /* ---------- World picker (difficulty) ---------- */
 .worlds-wrap {
-  margin: 0 auto 40px;
+  margin: 0 auto;
   max-width: 340px;
 }
 
@@ -444,8 +441,39 @@ html, body {
   max-width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  gap: 14px;
+  margin-top: auto; /* pushes the action group to the bottom */
 }
+
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.text-link {
+  background: none;
+  border: none;
+  font-family: "Press Start 2P", monospace;
+  font-size: 11px;
+  color: var(--white);
+  -webkit-text-stroke: 1px var(--black);
+  letter-spacing: 0.1em;
+  padding: 10px 14px;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+}
+
+.text-link::after {
+  content: " →";
+  opacity: 0.7;
+  margin-left: 4px;
+}
+
+.text-link:active { opacity: 0.7; }
 
 .brick-btn {
   display: block;
@@ -497,19 +525,18 @@ html, body {
 }
 
 .ios-hint {
-  background: rgba(252, 188, 0, 0.92);
-  border: 2px solid var(--black);
-  color: var(--black);
+  font-family: "Press Start 2P", monospace;
+  color: var(--white);
+  -webkit-text-stroke: 0.5px var(--black);
   font-size: 9px;
   line-height: 1.7;
-  padding: 10px 12px;
-  margin: 16px auto 0;
-  max-width: 320px;
+  margin: 4px 0 0;
   text-align: center;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+  opacity: 0.9;
 }
 
-.ios-hint b { color: var(--mario-red); }
+.ios-hint b { color: var(--coin); }
 
 /* ---------- End screen ---------- */
 #endScreen {
