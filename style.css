@@ -245,27 +245,27 @@ html, body {
 
 .overlay.sky {
   background:
-    radial-gradient(ellipse 40px 18px at 12% 8%, var(--white) 0 100%, transparent 101%),
-    radial-gradient(ellipse 26px 14px at 8% 8%, var(--white) 0 100%, transparent 101%),
-    radial-gradient(ellipse 26px 14px at 16% 8%, var(--white) 0 100%, transparent 101%),
-    radial-gradient(ellipse 50px 22px at 82% 16%, var(--white) 0 100%, transparent 101%),
-    radial-gradient(ellipse 30px 16px at 76% 16%, var(--white) 0 100%, transparent 101%),
-    radial-gradient(ellipse 30px 16px at 88% 16%, var(--white) 0 100%, transparent 101%),
-    radial-gradient(ellipse 38px 18px at 50% 38%, var(--white) 0 100%, transparent 101%),
-    radial-gradient(ellipse 24px 14px at 46% 38%, var(--white) 0 100%, transparent 101%),
-    radial-gradient(ellipse 24px 14px at 54% 38%, var(--white) 0 100%, transparent 101%),
+    radial-gradient(ellipse 44px 20px at 10% 9%, var(--white) 0 100%, transparent 101%),
+    radial-gradient(ellipse 28px 16px at 5% 9%, var(--white) 0 100%, transparent 101%),
+    radial-gradient(ellipse 28px 16px at 16% 9%, var(--white) 0 100%, transparent 101%),
+    radial-gradient(ellipse 54px 24px at 88% 18%, var(--white) 0 100%, transparent 101%),
+    radial-gradient(ellipse 32px 18px at 82% 18%, var(--white) 0 100%, transparent 101%),
+    radial-gradient(ellipse 32px 18px at 94% 18%, var(--white) 0 100%, transparent 101%),
     var(--sky);
 }
 
 .sky-content {
   flex: 1;
-  max-width: 460px;
+  max-width: 420px;
   width: 100%;
   margin: 0 auto;
-  padding: max(24px, env(safe-area-inset-top)) 16px 24px;
+  padding: max(40px, calc(24px + env(safe-area-inset-top))) 20px 32px;
   text-align: center;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .ground {
@@ -301,57 +301,68 @@ html, body {
 
 /* ---------- Title ---------- */
 .smb-title {
-  line-height: 1.35;
-  margin: 20px 0 16px;
+  line-height: 1.25;
+  margin: 0 0 18px;
   font-weight: normal;
 }
 
 .smb-row {
   display: block;
   font-family: "Press Start 2P", monospace;
-  font-size: clamp(28px, 9vw, 42px);
+  font-size: clamp(36px, 12vw, 58px);
   letter-spacing: 0.04em;
   color: var(--white);
   -webkit-text-stroke: 2px var(--black);
-  text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  text-shadow: 5px 5px 0 var(--black);
 }
 
 .smb-row.red { color: var(--mario-red); }
 .smb-row.blue { color: var(--mario-blue); }
 .smb-row.coin-text { color: var(--coin); }
 
-.smb-title.small .smb-row { font-size: clamp(18px, 5.5vw, 26px); }
+.smb-title.small .smb-row {
+  font-size: clamp(20px, 6vw, 28px);
+  text-shadow: 3px 3px 0 var(--black);
+}
 
 .subtitle {
+  display: inline-block;
   font-family: "Press Start 2P", monospace;
-  font-size: 10px;
-  color: var(--white);
-  letter-spacing: 0.12em;
-  -webkit-text-stroke: 1px var(--black);
-  margin: 0 0 32px;
+  font-size: 11px;
+  color: var(--black);
+  background: var(--coin);
+  border: 3px solid var(--black);
+  box-shadow: 3px 3px 0 var(--black);
+  padding: 8px 14px;
+  letter-spacing: 0.1em;
+  margin: 0 0 40px;
+  line-height: 1;
 }
 
 .label {
+  display: inline-block;
   font-family: "Press Start 2P", monospace;
   font-size: 10px;
-  color: var(--white);
-  letter-spacing: 0.12em;
-  -webkit-text-stroke: 1px var(--black);
-  margin: 0 0 12px;
+  color: var(--coin);
+  background: var(--black);
+  padding: 7px 14px;
+  letter-spacing: 0.18em;
+  margin: 0 0 18px;
+  line-height: 1;
 }
 
-.label.white { color: var(--white); }
+.label.white { color: var(--coin); background: var(--black); }
 
 /* ---------- World picker (difficulty) ---------- */
 .worlds-wrap {
-  margin: 0 auto 28px;
-  max-width: 320px;
+  margin: 0 auto 40px;
+  max-width: 340px;
 }
 
 .worlds {
   display: flex;
-  gap: 12px;
-  margin: 0 0 14px;
+  gap: 16px;
+  margin: 0 0 20px;
 }
 
 .worlds .diff-btn {
@@ -359,7 +370,7 @@ html, body {
   aspect-ratio: 1 / 1;
   background: var(--question);
   border: 3px solid var(--black);
-  box-shadow: 3px 3px 0 var(--brick-dark);
+  box-shadow: 4px 4px 0 var(--brick-dark);
   color: var(--brick-dark);
   font-family: "Press Start 2P", monospace;
   cursor: pointer;
@@ -415,28 +426,39 @@ html, body {
 
 .diff-name {
   font-family: "Press Start 2P", monospace;
-  font-size: 11px;
+  font-size: 14px;
   color: var(--white);
-  -webkit-text-stroke: 1px var(--black);
-  letter-spacing: 0.15em;
+  text-shadow: 3px 3px 0 var(--black);
+  letter-spacing: 0.2em;
   margin: 0;
   text-align: center;
-  min-height: 14px;
+  line-height: 1;
 }
 
+.diff-name::before { content: "★ "; color: var(--coin); margin-right: 2px; }
+.diff-name::after  { content: " ★"; color: var(--coin); margin-left: 2px; }
+
 /* ---------- Buttons ---------- */
+.actions {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .brick-btn {
   display: block;
   width: 100%;
   max-width: 320px;
-  margin: 10px auto;
-  padding: 16px;
+  margin: 0 auto;
+  padding: 18px 16px;
   background: var(--mario-red);
   color: var(--white);
   border: 3px solid var(--black);
   box-shadow: 4px 4px 0 var(--black);
   font-family: "Press Start 2P", monospace;
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 0.05em;
   cursor: pointer;
   line-height: 1.4;
@@ -461,8 +483,8 @@ html, body {
 
 .brick-btn.ghost,
 .brick-btn.small {
-  font-size: 10px;
-  padding: 11px;
+  font-size: 11px;
+  padding: 13px;
   background: rgba(255, 255, 255, 0.92);
   color: var(--black);
   box-shadow: 3px 3px 0 var(--black);
