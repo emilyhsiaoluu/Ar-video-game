@@ -327,13 +327,12 @@ html, body {
 
 .subtitle {
   font-family: "Press Start 2P", monospace;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--white);
-  -webkit-text-stroke: 1px var(--black);
-  letter-spacing: 0.18em;
+  text-shadow: 2px 2px 0 var(--black);
+  letter-spacing: 0.16em;
   margin: 0 0 44px;
-  line-height: 1;
-  opacity: 0.95;
+  line-height: 1.2;
 }
 
 .label {
@@ -457,9 +456,9 @@ html, body {
   background: none;
   border: none;
   font-family: "Press Start 2P", monospace;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--white);
-  -webkit-text-stroke: 1px var(--black);
+  text-shadow: 2px 2px 0 var(--black);
   letter-spacing: 0.1em;
   padding: 10px 14px;
   cursor: pointer;
@@ -469,8 +468,8 @@ html, body {
 
 .text-link::after {
   content: " →";
-  opacity: 0.7;
   margin-left: 4px;
+  color: var(--coin);
 }
 
 .text-link:active { opacity: 0.7; }
@@ -527,13 +526,13 @@ html, body {
 .ios-hint {
   font-family: "Press Start 2P", monospace;
   color: var(--white);
-  -webkit-text-stroke: 0.5px var(--black);
-  font-size: 9px;
-  line-height: 1.7;
+  text-shadow: 1px 1px 0 var(--black);
+  font-size: 10px;
+  line-height: 1.8;
   margin: 4px 0 0;
   text-align: center;
-  letter-spacing: 0.06em;
-  opacity: 0.9;
+  letter-spacing: 0.08em;
+  max-width: 280px;
 }
 
 .ios-hint b { color: var(--coin); }
