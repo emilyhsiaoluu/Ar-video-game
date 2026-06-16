@@ -30,13 +30,16 @@
       </div>
       <div id="scoreChip" class="nes-stat coin">
         <span class="stat-label">MUNCH</span>
-        <span class="stat-val"><span class="coin-icon"></span>×<span id="scoreNum">0</span></span>
+        <span class="stat-val"><span class="coin-icon"></span><span class="x">×</span><span id="scoreNum">0</span></span>
       </div>
       <button id="hudPickerBtn" class="icon-btn picker-btn" title="Change snack">💩</button>
       <button id="restartBtn" class="icon-btn" title="Start over">↻</button>
     </div>
     <div id="hudPicker" class="hud-picker"></div>
-    <div id="hint" class="hint">😮 OPEN WIDE!</div>
+    <div id="hint" class="hint">
+      <span class="hint-icon" id="hintIcon">😮</span>
+      <span class="hint-label" id="hintLabel">OPEN WIDE!</span>
+    </div>
   </div>
 
   <!-- Start screen -->
@@ -56,10 +59,19 @@
       </div>
 
       <div class="actions">
-        <button id="startBtn" class="brick-btn red">▶ PRESS START</button>
+        <button id="startBtn" class="brick-btn red">
+          <span class="btn-icon" aria-hidden="true">▶</span>
+          <span class="btn-label">PRESS START</span>
+        </button>
         <div class="links">
-          <button id="viewScoresBtn" class="text-link">🏆 HIGH SCORES</button>
-          <button id="installBtn" class="text-link hidden">📲 INSTALL APP</button>
+          <button id="viewScoresBtn" class="text-link">
+            <span class="link-icon" aria-hidden="true">🏆</span>
+            <span class="link-label">HIGH SCORES</span>
+          </button>
+          <button id="installBtn" class="text-link hidden">
+            <span class="link-icon" aria-hidden="true">📲</span>
+            <span class="link-label">INSTALL APP</span>
+          </button>
         </div>
         <p id="iosInstallHint" class="ios-hint hidden">Tap <b>Share</b> → <b>"Add to Home Screen"</b> to install.</p>
       </div>
@@ -69,22 +81,43 @@
 
   <!-- Time's up + scoreboard -->
   <div id="endScreen" class="overlay hidden">
-    <div class="end-banner">TIME'S UP!</div>
-    <div class="end-sub">
-      YOU MUNCHED
-      <span class="big"><span class="coin-icon big"></span>×<span id="endScore">0</span></span>
-    </div>
-    <div id="nameEntry" class="sky name-area">
-      <p class="label white">ENTER YOUR NAME</p>
-      <input id="nameInput" type="text" maxlength="6" placeholder="NAME" autocomplete="off" autocapitalize="characters" />
-      <button id="saveScoreBtn" class="brick-btn red">💾 SAVE SCORE</button>
-    </div>
-    <div id="scoreboardBox" class="scoreboard">
-      <h2 class="scoreboard-title">★ HIGH SCORES ★</h2>
-      <ol id="scoreList" class="score-list"></ol>
-      <p id="scoreListEmpty" class="score-empty hidden">★ BE THE FIRST TO SAVE A SCORE ★</p>
-      <button id="playAgainBtn" class="brick-btn green">▶ PLAY AGAIN</button>
-      <button id="backToStartBtn" class="brick-btn small">← BACK TO TITLE</button>
+    <div class="end-content">
+      <div class="end-banner">TIME'S UP!</div>
+
+      <div class="end-reveal">
+        <span class="end-reveal-label">YOU MUNCHED</span>
+        <span class="end-reveal-score">
+          <span class="coin-icon big"></span>
+          <span class="x">×</span>
+          <span id="endScore">0</span>
+        </span>
+      </div>
+
+      <div id="nameEntry" class="name-area">
+        <p class="label">ENTER YOUR NAME</p>
+        <input id="nameInput" type="text" maxlength="6" placeholder="NAME" autocomplete="off" autocapitalize="characters" />
+        <button id="saveScoreBtn" class="brick-btn red">
+          <span class="btn-icon" aria-hidden="true">💾</span>
+          <span class="btn-label">SAVE SCORE</span>
+        </button>
+      </div>
+
+      <div id="scoreboardBox" class="scoreboard">
+        <p class="label">★ HIGH SCORES ★</p>
+        <ol id="scoreList" class="score-list"></ol>
+        <p id="scoreListEmpty" class="score-empty hidden">BE THE FIRST TO SAVE A SCORE</p>
+      </div>
+
+      <div class="actions end-actions">
+        <button id="playAgainBtn" class="brick-btn green">
+          <span class="btn-icon" aria-hidden="true">▶</span>
+          <span class="btn-label">PLAY AGAIN</span>
+        </button>
+        <button id="backToStartBtn" class="text-link">
+          <span class="link-icon" aria-hidden="true">←</span>
+          <span class="link-label">BACK TO TITLE</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -92,13 +125,18 @@
   <div id="scoresOnlyScreen" class="overlay sky hidden">
     <div class="sky-content">
       <h1 class="smb-title small">
-        <span class="smb-row red">★ HIGH</span>
-        <span class="smb-row coin-text">SCORES ★</span>
+        <span class="smb-row red">HIGH</span>
+        <span class="smb-row coin-text">SCORES</span>
       </h1>
-      <div class="scoreboard">
+      <div class="scoreboard standalone">
         <ol id="scoreListOnly" class="score-list"></ol>
-        <p id="scoreListOnlyEmpty" class="score-empty hidden">★ NO SCORES YET — PLAY A ROUND ★</p>
-        <button id="closeScoresBtn" class="brick-btn red">← BACK</button>
+        <p id="scoreListOnlyEmpty" class="score-empty hidden">NO SCORES YET — PLAY A ROUND</p>
+      </div>
+      <div class="actions">
+        <button id="closeScoresBtn" class="brick-btn red">
+          <span class="btn-icon" aria-hidden="true">←</span>
+          <span class="btn-label">BACK</span>
+        </button>
       </div>
     </div>
     <div class="ground"></div>
@@ -111,8 +149,13 @@
         <span class="smb-row red">GAME</span>
         <span class="smb-row blue">OVER</span>
       </h1>
-      <div class="info-block" id="errorMsg">Something went wrong.</div>
-      <button id="retryBtn" class="brick-btn red">▶ TRY AGAIN</button>
+      <p id="errorMsg" class="subtitle">Something went wrong.</p>
+      <div class="actions">
+        <button id="retryBtn" class="brick-btn red">
+          <span class="btn-icon" aria-hidden="true">▶</span>
+          <span class="btn-label">TRY AGAIN</span>
+        </button>
+      </div>
     </div>
     <div class="ground"></div>
   </div>

@@ -14,6 +14,8 @@ const scoreNum    = document.getElementById("scoreNum");
 const timerChip   = document.getElementById("timerChip");
 const timerNum    = document.getElementById("timerNum");
 const hintEl      = document.getElementById("hint");
+const hintIcon    = document.getElementById("hintIcon");
+const hintLabel   = document.getElementById("hintLabel");
 const startScreen = document.getElementById("startScreen");
 const startBtn    = document.getElementById("startBtn");
 const viewScoresBtn = document.getElementById("viewScoresBtn");
@@ -229,7 +231,7 @@ async function startCamera() {
 async function recoverCamera() {
   if (recovering) return;
   recovering = true;
-  hintEl.textContent = "📷 RECONNECTING…";
+  setHint("📷", "RECONNECTING…");
   try {
     await startCamera();
   } catch (err) {
@@ -794,12 +796,22 @@ function updateTimerUI() {
   timerChip.classList.toggle("urgent", timeLeft <= COUNTDOWN_AT && !celebrating);
 }
 
+function setHint(icon, label) {
+  hintIcon.textContent = icon;
+  hintLabel.textContent = label;
+}
+
 function updateHint() {
-  if (!mouth.visible) {
-    if (faceMissingTime > 0.6) hintEl.textContent = "👀 MOVE INTO FRAME!";
+  if (recovering) {
+    setHint("📷", "RECONNECTING…");
     return;
   }
-  hintEl.textContent = mouth.open ? "😋 CHOMP DOWN!" : "😮 OPEN WIDE!";
+  if (!mouth.visible) {
+    if (faceMissingTime > 0.6) setHint("👀", "MOVE INTO FRAME!");
+    return;
+  }
+  if (mouth.open) setHint("😋", "CHOMP DOWN!");
+  else setHint("😮", "OPEN WIDE!");
 }
 
 /* ============================================================
@@ -890,7 +902,7 @@ function renderScoreboard(listEl, emptyEl, highlightEntry) {
     li.innerHTML = `
       <span class="rank">${rank}</span>
       <span class="name"></span>
-      <span class="score">×${entry.score}</span>
+      <span class="score"><span class="coin-icon"></span>×${entry.score}</span>
     `;
     li.querySelector(".name").textContent = entry.name;
     if (highlightEntry &&
