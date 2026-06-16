@@ -193,21 +193,36 @@ html, body {
 }
 
 .icon-btn.picker-btn {
+  width: auto;
+  min-width: 60px;
+  padding: 0 8px 0 10px;
   background: var(--coin);
-  position: relative;
+  gap: 6px;
+  font-size: 22px;
 }
 
-.icon-btn.picker-btn::after {
-  content: "↕";
-  position: absolute;
-  bottom: -2px;
-  right: -2px;
-  font-size: var(--fs-micro);
-  background: var(--black);
-  color: var(--coin);
-  padding: 1px 3px;
-  border-radius: 2px;
-  pointer-events: none;
+.icon-btn.picker-btn .picker-emoji {
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+.icon-btn.picker-btn .picker-chevron {
+  font-size: 10px;
+  line-height: 1;
+  color: var(--brick-dark);
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.18s ease;
+}
+
+.icon-btn.picker-btn.open .picker-chevron {
+  transform: rotate(180deg);
+  color: var(--mario-red);
+}
+
+.icon-btn.picker-btn.open {
+  background: var(--white);
 }
 
 .topbar > .icon-btn + .icon-btn { margin-left: var(--sp-1); }
@@ -574,9 +589,14 @@ html, body {
 .ios-hint b { color: var(--coin); }
 
 /* =========================================================
-   END SCREEN
+   END SCREEN — single viewport, only score-list scrolls
    ========================================================= */
-#endScreen { background: var(--paper); padding: 0; }
+#endScreen {
+  background: var(--paper);
+  padding: 0;
+  display: flex;
+  overflow: hidden;
+}
 
 .end-content {
   flex: 1;
@@ -585,13 +605,15 @@ html, body {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .end-banner {
   background: var(--black);
   color: var(--coin);
   text-align: center;
-  padding: max(var(--sp-5), calc(var(--sp-4) + env(safe-area-inset-top))) var(--sp-4) var(--sp-4);
+  padding: max(var(--sp-4), calc(var(--sp-3) + env(safe-area-inset-top))) var(--sp-4) var(--sp-3);
   font-size: var(--fs-headline);
   letter-spacing: 0.08em;
   border-bottom: 4px solid var(--mario-red);
@@ -601,13 +623,14 @@ html, body {
 
 .end-reveal {
   background: var(--paper);
-  padding: var(--sp-6) var(--sp-5);
+  padding: var(--sp-5) var(--sp-5);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sp-3);
+  gap: var(--sp-2);
   border-bottom: 3px solid var(--black);
+  flex-shrink: 0;
 }
 
 .end-reveal-label {
@@ -624,7 +647,7 @@ html, body {
   justify-content: center;
   gap: var(--sp-2);
   font-family: var(--pixel-font);
-  font-size: 40px;
+  font-size: 36px;
   color: var(--mario-red);
   line-height: 1;
   text-shadow: 3px 3px 0 var(--black);
@@ -638,12 +661,13 @@ html, body {
 
 .name-area {
   background: var(--sky);
-  padding: var(--sp-5) var(--sp-5) var(--sp-6);
+  padding: var(--sp-4) var(--sp-5);
   border-bottom: 3px solid var(--black);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--sp-3);
+  flex-shrink: 0;
 }
 
 .name-area .label { margin: 0; }
@@ -651,7 +675,7 @@ html, body {
 #nameInput {
   width: 100%;
   max-width: 320px;
-  padding: 14px var(--sp-4);
+  padding: 12px var(--sp-4);
   background: var(--paper);
   border: 3px solid var(--black);
   color: var(--black);
@@ -675,11 +699,15 @@ html, body {
    ========================================================= */
 .scoreboard {
   background: var(--paper);
-  padding: var(--sp-5) var(--sp-5);
+  padding: var(--sp-4) var(--sp-5) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--sp-3);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
 }
 
 .scoreboard.standalone {
@@ -689,17 +717,23 @@ html, body {
   width: calc(100% - 8px);
   max-width: 360px;
   border-radius: 4px;
+  flex: initial;
+  overflow: visible;
+  padding: var(--sp-4);
 }
 
 .score-list {
   list-style: none;
-  padding: 0;
+  padding: 0 0 var(--sp-2);
   margin: 0;
   width: 100%;
   max-width: 360px;
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .score-list li {
@@ -776,9 +810,11 @@ html, body {
 
 .end-actions {
   background: var(--paper);
-  padding: var(--sp-5) var(--sp-5) max(var(--sp-6), calc(var(--sp-4) + env(safe-area-inset-bottom)));
+  padding: var(--sp-4) var(--sp-5) max(var(--sp-4), calc(var(--sp-2) + env(safe-area-inset-bottom)));
   margin-top: 0;
   border-top: 3px solid var(--black);
+  flex-shrink: 0;
+  gap: var(--sp-2);
 }
 
 .end-actions .text-link {

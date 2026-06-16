@@ -114,7 +114,12 @@ function buildPickers() {
     diffPicker.appendChild(btn);
   });
   diffName.textContent = DIFFICULTY[difficulty].name;
-  hudPickerBtn.textContent = currentEmoji;
+  setHudPickerEmoji(currentEmoji);
+}
+
+function setHudPickerEmoji(emoji) {
+  const slot = hudPickerBtn.querySelector(".picker-emoji");
+  if (slot) slot.textContent = emoji;
 }
 
 function selectEmoji(emoji) {
@@ -122,8 +127,9 @@ function selectEmoji(emoji) {
   document.querySelectorAll(".emoji-btn").forEach((b) => {
     b.classList.toggle("selected", b.textContent === emoji);
   });
-  hudPickerBtn.textContent = emoji;
+  setHudPickerEmoji(emoji);
   hudPicker.classList.remove("open");
+  hudPickerBtn.classList.remove("open");
   // Swap snacks already on screen so the change is instant and obvious.
   emojis.forEach((e) => (e.char = emoji));
 }
@@ -137,7 +143,8 @@ function selectDifficulty(key) {
 }
 
 hudPickerBtn.addEventListener("click", () => {
-  hudPicker.classList.toggle("open");
+  const isOpen = hudPicker.classList.toggle("open");
+  hudPickerBtn.classList.toggle("open", isOpen);
 });
 
 /* ============================================================
@@ -216,7 +223,12 @@ async function startCamera() {
     video.srcObject = null;
   }
   stream = await navigator.mediaDevices.getUserMedia({
-    video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } },
+    video: {
+      facingMode: "user",
+      width: { ideal: 640 },
+      height: { ideal: 480 },
+      frameRate: { ideal: 30, max: 30 },
+    },
     audio: false,
   });
   video.srcObject = stream;
@@ -851,6 +863,17 @@ function endRound() {
   endScreen.classList.remove("hidden");
   spawnConfetti();
   playWin();
+  // Stop the camera + render loop while the end screen is up. Saves
+  // battery and stops the phone from heating up while reading scores.
+  running = false;
+  releaseStream();
+}
+
+function releaseStream() {
+  if (stream) {
+    stream.getTracks().forEach((t) => t.stop());
+    stream = null;
+  }
 }
 
 /* ============================================================
@@ -923,9 +946,9 @@ saveScoreBtn.addEventListener("click", () => {
   renderScoreboard(scoreList, scoreListEmpty, entry);
 });
 
-playAgainBtn.addEventListener("click", () => {
+playAgainBtn.addEventListener("click", async () => {
   endScreen.classList.add("hidden");
-  resetGame();
+  await resumeGame();
 });
 
 backToStartBtn.addEventListener("click", () => {
@@ -944,10 +967,33 @@ closeScoresBtn.addEventListener("click", () => {
   scoresOnlyScreen.classList.add("hidden");
 });
 
-restartBtn.addEventListener("click", () => {
+restartBtn.addEventListener("click", async () => {
   endScreen.classList.add("hidden");
-  resetGame();
+  await resumeGame();
 });
+
+// Restart the camera + loop after the end screen (Play Again / Restart).
+// Camera was stopped on endRound to save battery; spin it back up now.
+async function resumeGame() {
+  if (running) {
+    resetGame();
+    return;
+  }
+  loader.classList.remove("hidden");
+  loaderText.textContent = "READY?";
+  try {
+    await startCamera();
+  } catch (err) {
+    loader.classList.add("hidden");
+    showError(describeError(err));
+    return;
+  }
+  loader.classList.add("hidden");
+  resetGame();
+  running = true;
+  lastFrameTime = performance.now();
+  requestAnimationFrame(loop);
+}
 
 function stopGame() {
   running = false;
