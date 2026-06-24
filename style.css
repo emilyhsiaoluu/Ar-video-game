@@ -354,7 +354,7 @@ html, body {
    TITLE + TEXT
    ========================================================= */
 .smb-title {
-  line-height: 1.25;
+  line-height: 1.4;
   margin: 0 0 var(--sp-4);
   font-weight: normal;
 }
@@ -476,7 +476,9 @@ html, body {
 .diff-name::after {
   content: "★";
   color: var(--coin);
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 1;
+  transform: translateY(-1px);
 }
 
 /* =========================================================
@@ -514,10 +516,11 @@ html, body {
 }
 
 .brick-btn .btn-icon {
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1;
   display: inline-flex;
   align-items: center;
+  transform: translateY(-1px);
 }
 
 .brick-btn .btn-label {
@@ -564,7 +567,7 @@ html, body {
   position: relative;
 }
 
-.text-link .link-icon { font-size: 14px; line-height: 1; }
+.text-link .link-icon { font-size: 14px; line-height: 1; transform: translateY(-3px); }
 .text-link .link-label { line-height: 1; }
 
 .text-link:active { opacity: 0.7; }
