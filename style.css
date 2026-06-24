@@ -354,7 +354,7 @@ html, body {
    TITLE + TEXT
    ========================================================= */
 .smb-title {
-  line-height: 1.4;
+  line-height: 1.55;
   margin: 0 0 var(--sp-4);
   font-weight: normal;
 }
@@ -478,7 +478,7 @@ html, body {
   color: var(--coin);
   font-size: 16px;
   line-height: 1;
-  transform: translateY(-1px);
+  transform: translateY(-4px);
 }
 
 /* =========================================================
@@ -520,7 +520,7 @@ html, body {
   line-height: 1;
   display: inline-flex;
   align-items: center;
-  transform: translateY(-1px);
+  transform: translateY(-3px);
 }
 
 .brick-btn .btn-label {

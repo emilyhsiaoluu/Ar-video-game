@@ -48,7 +48,7 @@ const EMOJIS = ["💩","🍕","🍩","🍪","🍎","🍌","🍔","🍓","🧁","
 const DIFFICULTY = {
   easy:   { world: "1-1", emoji: "🐢", name: "EASY",   speed: 0.65, count: 5 },
   medium: { world: "1-2", emoji: "🍄", name: "MEDIUM", speed: 1.0,  count: 7 },
-  fast:   { world: "1-3", emoji: "⭐", name: "FAST",   speed: 1.5,  count: 9 },
+  fast:   { world: "1-3", emoji: "⭐", name: "HARD",   speed: 1.5,  count: 9 },
 };
 const ROUND_DURATION = 30;
 const COUNTDOWN_AT = 5;
