@@ -426,14 +426,14 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--sp-1);
+  gap: var(--sp-2);
   position: relative;
   padding: var(--sp-3);
   transition: transform 0.08s ease;
 }
 
 .worlds .diff-btn .emoji {
-  font-size: 34px;
+  font-size: 30px;
   line-height: 1;
 }
 
@@ -488,8 +488,8 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: var(--sp-4);
-  margin-top: auto;
-  padding-top: var(--sp-6);
+  margin-top: var(--sp-7);
+  padding-top: 0;
 }
 
 .brick-btn {
