@@ -24,7 +24,7 @@
   --sp-7: 48px;
 
   /* Typography sizes */
-  --fs-display: clamp(46px, 13vw, 72px);
+  --fs-display: clamp(36px, 12vw, 58px);
   --fs-display-sm: clamp(20px, 6vw, 28px);
   --fs-headline: clamp(22px, 6.5vw, 30px);
   --fs-title: 16px;
@@ -409,14 +409,13 @@ html, body {
 
 .worlds {
   display: flex;
-  gap: var(--sp-4);
+  gap: var(--sp-3);
   margin: 0 0 var(--sp-3);
 }
 
 .worlds .diff-btn {
   flex: 1;
   aspect-ratio: 1 / 1;
-  min-height: 108px;
   background: var(--question);
   border: 3px solid var(--black);
   box-shadow: 4px 4px 0 var(--brick-dark), inset -4px -4px 0 rgba(0,0,0,0.18);
@@ -427,14 +426,14 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--sp-3);
+  gap: var(--sp-1);
   position: relative;
-  padding: var(--sp-4) var(--sp-3) var(--sp-3);
+  padding: var(--sp-3);
   transition: transform 0.08s ease;
 }
 
 .worlds .diff-btn .emoji {
-  font-size: 36px;
+  font-size: 34px;
   line-height: 1;
 }
 
@@ -443,7 +442,6 @@ html, body {
   color: var(--brick-dark);
   letter-spacing: 0.1em;
   opacity: 0.7;
-  line-height: 1;
 }
 
 .worlds .diff-btn.selected {
