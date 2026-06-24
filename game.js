@@ -108,7 +108,7 @@ function buildPickers() {
     btn.dataset.key = key;
     btn.innerHTML = `
       <span class="emoji">${info.emoji}</span>
-      <span class="world-num">${info.world}</span>
+      <span class="world-num">${info.name}</span>
     `;
     btn.addEventListener("click", () => selectDifficulty(key));
     diffPicker.appendChild(btn);
