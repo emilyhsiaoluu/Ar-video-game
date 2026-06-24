@@ -324,6 +324,7 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .ground {
@@ -565,12 +566,6 @@ html, body {
 
 .text-link .link-icon { font-size: 14px; line-height: 1; }
 .text-link .link-label { line-height: 1; }
-
-.text-link::after {
-  content: "→";
-  margin-left: var(--sp-1);
-  color: var(--coin);
-}
 
 .text-link:active { opacity: 0.7; }
 
@@ -822,7 +817,6 @@ html, body {
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
 }
 
-.end-actions .text-link::after { color: var(--mario-red); }
 
 /* =========================================================
    LOADER
